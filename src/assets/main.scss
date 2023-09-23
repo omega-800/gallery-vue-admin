@@ -1,0 +1,42 @@
+@import './variables.scss';
+@import './screens.scss';
+
+body {
+  margin: 0;
+  background-color: $c-light;
+}
+
+#app {
+  font-family: Avenir,
+    Helvetica,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & main {
+    max-width: $mobile-max;
+    margin: 0 auto;
+    padding: $el-dbl;
+
+    font-weight: normal;
+  }
+
+  & p {
+    margin: 0;
+  }
+}
+
+@media (hover: hover) {
+
+  a,
+  .hov {
+    &:hover {
+      color: $c-p-light;
+    }
+  }
+}

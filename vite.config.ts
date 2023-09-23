@@ -22,4 +22,14 @@ export default defineConfig({
       usePolling: true,
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+              @import "@/assets/screens.scss";
+              @import "@/assets/variables.scss";
+            `,
+      },
+    },
+  },
 })

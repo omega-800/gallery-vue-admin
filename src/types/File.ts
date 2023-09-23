@@ -1,5 +1,5 @@
-import { NamedEntry } from "./Entry"
-import { IPostgresInterval } from 'postgres-interval';
+import type { NamedEntry } from "./Entry"
+import type { IPostgresInterval } from 'postgres-interval';
 
 export interface FileData extends NamedEntry {
     url: string
@@ -8,14 +8,15 @@ export interface FileData extends NamedEntry {
     file_name: string
     width: number
     height: number
+    __typename: string
     /* galleries: Gallery[];
     product?: Product | null */
 }
 
-export interface ImageData extends FileData {
+export interface Image extends FileData {
     alt?: string | null
 }
 
-export interface VideoData extends FileData {
+export interface Video extends FileData {
     duration?: IPostgresInterval | null
 }

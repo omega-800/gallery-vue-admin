@@ -19,6 +19,7 @@ export async function loadFiles() {
                 file_name
                 width
                 height
+                __typename
             }
         }`
     })
