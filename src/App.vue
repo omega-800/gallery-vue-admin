@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { loadFiles } from './util/setup.ts'
 import ImageIcon from '@/components/icons/IconImage.vue'
 import HomeIcon from '@/components/icons/IconHome.vue'
 </script>
 
 <script lang="ts">
-loadFiles();
 </script>
 
 <template>

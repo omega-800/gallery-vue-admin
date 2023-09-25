@@ -7,8 +7,25 @@ $c-dark: #151613;
 
 $el-size: 1em;
 $el-dbl: $el-size * 2;
-$el-padding: calc($el-size / 2);
+$el-rad: calc($el-size / 2);
+$el-pad: calc($el-rad / 2);
+$thin: 0.15em;
 
 $f-s: 12px;
 $f-m: 16px;
 $f-l: 24px;
+
+$bd-def: $thin solid $c-dark;
+$bd-dot: $thin dotted $c-dark;
+$bd-dash: $thin dashed $c-dark;
+
+$z-n: -1;
+$z-l: 1;
+$z-lm: 2;
+$z-m: 3;
+$z-mh: 4;
+$z-h: 5;
+
+$op-l: 0.3;
+$op-m: 0.5;
+$op-h: 0.8;

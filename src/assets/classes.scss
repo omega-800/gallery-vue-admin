@@ -1,0 +1,133 @@
+$c-hov: $c-p-dark;
+
+.btn {
+    background-color: $c-p-light;
+    border: $bd-def;
+    padding: $el-pad;
+    border-radius: $thin;
+    cursor: pointer;
+    color: $c-dark;
+    font-weight: 600;
+    font-size: $f-m;
+
+    &:hover {
+        background-color: $c-hov;
+    }
+
+    &:disabled {
+        opacity: $op-h;
+        cursor: default;
+
+        &:hover {
+            background-color: $c-p-light;
+        }
+    }
+}
+
+.lnk {
+    border-bottom: $bd-def;
+    cursor: pointer;
+    color: $c-dark;
+    font-weight: 600;
+    font-size: $f-m;
+
+    &:hover {
+        color: $c-hov;
+        border-color: $c-hov;
+    }
+}
+
+.custom-input {
+    & input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: $z-n;
+    }
+
+    & label {
+        cursor: pointer;
+    }
+
+    & input:focus+label {
+        background-color: $c-hov;
+        outline: $bd-dot;
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+}
+
+
+.fl-row {
+    display: flex;
+
+    flex: {
+        direction: row;
+        wrap: wrap;
+    }
+
+    align: {
+        items: center;
+        content: space-around;
+    }
+
+    justify-content: space-around;
+}
+
+.fl-row-j {
+    display: flex;
+
+    flex: {
+        direction: row;
+        wrap: wrap;
+    }
+
+    justify-content: space-evenly;
+}
+
+.fl-row-nj {
+    display: flex;
+
+    flex: {
+        direction: row;
+        wrap: wrap;
+    }
+}
+
+.fl-e2e {
+    display: flex;
+
+    flex: {
+        direction: row;
+        wrap: wrap;
+    }
+
+    align: {
+        items: center;
+        content: space-between;
+    }
+
+    justify-content: space-between;
+}
+
+.fl-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.fl-col-c {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fl-col-l {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+}
