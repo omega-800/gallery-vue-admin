@@ -1,0 +1,32 @@
+.custom-input {
+    & input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: $z-n;
+    }
+
+    & label {
+        cursor: pointer;
+    }
+
+    & input:focus+label {
+        background-color: $c-hov;
+        outline: $bd-dot;
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+}
+
+input[type=text],
+input[type=number],
+input[type=checkbox] {
+    background-color: $c-def;
+    border: $bd-def;
+    padding: 0 $el-pad;
+    border-radius: $thin;
+    color: $c-dark;
+    height: $el-dbl;
+    margin: 0;
+}

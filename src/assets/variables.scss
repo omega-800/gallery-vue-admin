@@ -2,18 +2,23 @@ $c-p-dark: #157A6E;
 $c-p-mid: #499F68;
 $c-p-light: #77B28C;
 $c-s-dark: #B4654A;
+$c-s-light: #b49d4a;
 $c-light: #C2C5BB;
 $c-dark: #151613;
 
 $el-size: 1em;
+$el-wrap: $el-size * 1.5;
 $el-dbl: $el-size * 2;
+$el-tpl: $el-size * 3;
 $el-rad: calc($el-size / 2);
 $el-pad: calc($el-rad / 2);
 $thin: 0.15em;
 
-$f-s: 12px;
+$f-xs: 12px;
+$f-s: 14px;
 $f-m: 16px;
-$f-l: 24px;
+$f-l: 20px;
+$f-xl: 24px;
 
 $bd-def: $thin solid $c-dark;
 $bd-dot: $thin dotted $c-dark;
@@ -29,3 +34,5 @@ $z-h: 5;
 $op-l: 0.3;
 $op-m: 0.5;
 $op-h: 0.8;
+
+$tr-def: 0.5s ease;

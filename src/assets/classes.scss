@@ -1,7 +1,8 @@
-$c-hov: $c-p-dark;
+$c-def: $c-p-light;
+$c-hov: $c-p-mid;
 
 .btn {
-    background-color: $c-p-light;
+    background-color: $c-def;
     border: $bd-def;
     padding: $el-pad;
     border-radius: $thin;
@@ -19,15 +20,25 @@ $c-hov: $c-p-dark;
         cursor: default;
 
         &:hover {
-            background-color: $c-p-light;
+            background-color: $c-def;
         }
+    }
+}
+
+.hov {
+    cursor: pointer;
+    color: $c-p-light;
+
+    &:hover {
+        color: $c-p-mid !important;
     }
 }
 
 .lnk {
     border-bottom: $bd-def;
     cursor: pointer;
-    color: $c-dark;
+    border-color: $c-def;
+    color: $c-def;
     font-weight: 600;
     font-size: $f-m;
 
@@ -37,27 +48,35 @@ $c-hov: $c-p-dark;
     }
 }
 
-.custom-input {
-    & input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: $z-n;
-    }
-
-    & label {
-        cursor: pointer;
-    }
-
-    & input:focus+label {
-        background-color: $c-hov;
-        outline: $bd-dot;
-        outline: -webkit-focus-ring-color auto 5px;
-    }
+.comp {
+    position: relative;
 }
 
+.box {
+    background-color: $c-p-dark;
+    outline: $bd-dash;
+    outline-offset: -5px;
+    padding: $el-size;
+}
+
+.box2 {
+    background-color: $c-p-dark;
+    border-radius: $el-rad;
+    padding: $el-pad;
+    border: $bd-def;
+}
+
+.f-l {
+    font-size: $f-l;
+}
+
+.f-m {
+    font-size: $f-m;
+}
+
+.f-s {
+    font-size: $f-s;
+}
 
 .fl-row {
     display: flex;
@@ -130,4 +149,10 @@ $c-hov: $c-p-dark;
     flex-direction: column;
     align-items: baseline;
     justify-content: center;
+}
+
+//icons
+.w-6.h-6 {
+    width: $el-dbl;
+    height: $el-dbl;
 }

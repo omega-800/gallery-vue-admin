@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { FileData } from "@/types/File";
+import type { FileData } from "@/types/gql/response/File";
 
 export type FilesState = {
     files: FileData[];
@@ -10,16 +10,32 @@ export const useFileStore = defineStore("files", {
         return { files: [] };
     },
     actions: {
-        update(file: FileData) {
-            console.log(file)
+        updateProperty<
+            KEY extends keyof FileData,
+            VAL extends FileData[KEY]
+        >(id: string, key: KEY, value: VAL) {
+            const file = this.files.find(f => f.id == id)
+            if (file) file[key] = value;
         },
         set(files: FileData[]) {
             this.files = files;
         },
+        add(file: FileData) {
+            this.files.push(file);
+        },
+        addMultiple(files: FileData[]) {
+            this.files.push(...files);
+        },
     },
     getters: {
-        file(state) {
-            return (id: string) => state.files.filter(file => file.id === id);
+        byId(state) {
+            return (id: string) => state.files.find(file => file.id === id);
         },
+        deleted(state) {
+            return state.files.filter(file => file.date_deleted != undefined)
+        },
+        available(state) {
+            return state.files.filter(file => file.date_deleted == undefined)
+        }
     },
 });

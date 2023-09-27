@@ -1,66 +1,103 @@
-import type { CreateImageInput, FileData, Image } from "@/types/File";
-import { makeGQLRequest, stringifyForGQL } from "./request";
+import type { FileData, Image, Video } from "@/types/gql/response/File";
+import type { CreateFileInput, CreateVideoInput } from "@/types/gql/input/File";
+import { entityQueryFields, fillDate, makeGQLRequest, mapIdArr, stringifyForGQL } from "./request";
 
-export async function addImage(image: CreateImageInput): Promise<Image> {
+export const fileQueryFields = `
+${entityQueryFields}
+name
+file_type
+file_name
+file_name_orig
+size
+width
+height
+width_prev
+height_prev
+edited
+favorite
+tags {
+    id
+}
+__typename`
+export const imageQueryFields = `${fileQueryFields}
+alt`
+export const videoQueryFields = `${fileQueryFields}
+duration
+fps
+fps_prev`
+export async function addImageToDB(image: any): Promise<FileData> {
+    const onlyGqlAttrs: CreateFileInput = onlyGqlAttrsObj(image)
     const query = `mutation {
-            create_image (data:${stringifyForGQL(image)}){
-                id
-                date_added
-                date_updated
-                date_deleted
-                name
-                alt
-                url
-                preview_url
-                file_type
-                file_name
-                width
-                height
-                __typename
-            }
+            create_image (data:${stringifyForGQL(onlyGqlAttrs)}){${imageQueryFields}}
         }`
 
     const response = await makeGQLRequest(query)
+    return mapFile(response.data.create_image)
+}
 
-    return fillDate(response.data.create_image)
+export async function addVideoToDB(video: any): Promise<FileData> {
+    const onlyGqlAttrs: CreateVideoInput = {
+        ...onlyGqlAttrsObj(video),
+        duration: video.duration,
+        fps: video.fps,
+        fps_prev: video.fps_prev,
+    }
+    const query = `mutation {
+            create_video (data:${stringifyForGQL(onlyGqlAttrs)}){${videoQueryFields}}
+        }`
+
+    const response = await makeGQLRequest(query)
+    return mapFile(response.data.create_video)
 }
 
 export async function getFiles(): Promise<FileData[]> {
-
     const query = ` {
-            files {
-                id
-                date_added
-                date_updated
-                date_deleted
-                name
-                url
-                preview_url
-                file_type
-                file_name
-                width
-                height
-                __typename
-            }
+            files {${fileQueryFields}}
         }`
 
     const response = await makeGQLRequest(query)
-
-    return response.data.files.map((file: any) => fillDate(file))
+    return response.data.files.map((file: any) => mapFile(file))
 }
 
-function fillDate(file: any): FileData {
-    if (file.date_added) {
-        file.date_added = new Date(file.date_added)
-    }
-    if (file.date_deleted) {
-        file.date_deleted = new Date(file.date_deleted)
-    }
-    if (file.date_updated) {
-        file.date_updated = new Date(file.date_updated)
-    }
-    return file
+export async function getImages(): Promise<Image[]> {
+    const query = ` {
+            images {${imageQueryFields}}
+        }`
+
+    const response = await makeGQLRequest(query)
+    return response.data.images.map((file: any) => mapFile(file))
 }
 
+export async function getVideos(): Promise<Video[]> {
+    const query = ` {
+            videos {${videoQueryFields}}
+        }`
 
+    const response = await makeGQLRequest(query)
+    return response.data.videos.map((file: any) => mapFile(file))
+}
+
+export async function setFavoriteFile(id: string, favorite: boolean): Promise<Date> {
+    const query = `mutation {
+        set_favorite (id:"${id}", favorite:${favorite}){date_updated}
+    }`
+    const response = await makeGQLRequest(query)
+    console.log(response.data, response.data.set_favorite)
+    return new Date(response.data.set_favorite.date_updated)
+}
+export const mapFile = (file: any) => ({ ...fillDate(mapIdArr(file, 'tag')), entity_type: 'file' })
+//export const mapTags = (file: any) => ({ ...file, tag_ids: file.tags.map((tag: { id: string }) => tag.id) })
+
+export const onlyGqlAttrsObj = (file: any): CreateFileInput => {
+    return {
+        file_type: file.file_type,
+        file_name: file.file_name,
+        file_name_orig: file.file_name_orig,
+        width: file.width,
+        height: file.height,
+        width_prev: file.width_prev,
+        height_prev: file.height_prev,
+        size: file.size,
+    }
+}
 

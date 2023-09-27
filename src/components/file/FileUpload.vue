@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { uploadFiles } from '@/util/file/upload'
+import { useUploadStore } from '@/stores/upload';
+import { storeToRefs } from 'pinia';
+import { UploadStatus } from '@/types/files/FileUpload'
+import TrashIcon from '@/components/icons/IconTrash.vue'
 
-let uploadStatus = ref("")
-let files: File[] = reactive([])
+const uploadStore = useUploadStore()
+
+let { inProgress, items } = storeToRefs(useUploadStore());
 
 function isAdvancedUpload(): boolean {
     let div = document.createElement('div');
@@ -17,83 +22,169 @@ function dragLeave(e: DragEvent) {
 }
 function dropFiles(e: DragEvent) {
     if (!e.dataTransfer?.files) return;
-    addFiles([...e.dataTransfer.files])
+    uploadStore.addItems([...e.dataTransfer.files])
 }
 function inputChange(e: Event) {
     let target = e.currentTarget as HTMLInputElement;
     if (!target.files) return;
-    addFiles([...target.files])
+    uploadStore.addItems([...target.files])
 }
-function addFiles(items: File[]) {
-    items.forEach(item => {
-        if (!files.some(file => file.name == item.name) && ['image', 'video'].includes(item.type.split('/')[0])) files.push(item)
-    })
-}
-function removeFile(file: File) {
-    files.splice(files.findIndex(f => f == file), 1)
+function removeFile(id: string) {
+    uploadStore.removeItem(id)
 }
 function resetFiles() {
-    files.splice(0)
+    uploadStore.resetItems()
 }
 function upload() {
-    uploadStatus.value = "Uploading..."
-    uploadStatus.value = uploadFiles(files);
+    uploadFiles()
+    //resetFiles();
 }
 </script>
 
 <template>
-    <form :class="[{ advanced: isAdvancedUpload() }, 'upload-comp', 'comp']" action="" method="POST"
-        enctype="multipart/form-data" @submit.prevent="upload()">
-        <div class="file-inputs custom-input fl-col">
-            <div v-if="isAdvancedUpload()" class="drop-zone" @dragenter.stop.prevent="dragEnter($event)"
-                @dragover.stop.prevent="dragEnter($event)" @dragleave.stop.prevent="dragLeave($event)"
-                @drop.stop.prevent="dropFiles($event); dragLeave($event)"></div>
-            <div class="select">
-                <input type="file" name="files" id="files" data-multiple-caption="{count} files selected"
-                    accept="image/*,video/*" multiple @change="inputChange($event)" />
-                <label for="files" class="lnk">Choose a file</label>
-                <span> or drag it here.</span>
-            </div>
+    <form :class="[{ advanced: isAdvancedUpload(), inprogress: inProgress }, 'upload-comp', 'comp', 'custom-input', 'box']"
+        action="" method="POST" enctype="multipart/form-data" @submit.prevent="upload()">
 
-            <div class="files fl-col-l" ref="filesdiv">
-                <p v-for="file in files" :key="file.name" class="lnk" @click="removeFile(file)">X {{ file.name }}</p>
-            </div>
+        <div v-if="isAdvancedUpload()" class="drop-zone" @dragenter.stop.prevent="dragEnter($event)"
+            @dragover.stop.prevent="dragEnter($event)" @dragleave.stop.prevent="dragLeave($event)"
+            @drop.stop.prevent="dropFiles($event); dragLeave($event)"></div>
 
-            <div class="actions fl-e2e">
-                <button v-if="files.length > 0" class="btn" @click="resetFiles()">X Reset</button>
-                <button class="btn" type="submit" :disabled="files.length == 0">
-                    {{ files.length == 0 ? 'Upload (select files first) ' : `Upload ${files.length} files` }}
-                </button>
-            </div>
+        <div class="progress">Upload in progress...</div>
+        <div class="actions fl-e2e">
+            <button class="btn" type="submit" :disabled="items.length == 0">
+                {{ items.length == 0 ? 'Upload (select files first) ' : `Upload ${items.length} files` }}
+            </button>
+            <button v-if="items.length > 0" class="btn" @click="resetFiles()">X Reset</button>
         </div>
-        <div class="info">{{ uploadStatus }}</div>
+        <div class="select">
+            <input type="file" name="files" id="files" data-multiple-caption="{count} files selected"
+                accept="image/*,video/*" multiple @change="inputChange($event)" :disabled="inProgress" />
+            <label for="files" class="lnk">Choose a file</label>
+            <span> or drag it here.</span>
+        </div>
+
+        <div class="files fl-col-l">
+            <template v-for="item in items" :key="item.id">
+                <div v-if="item.state.status != UploadStatus.done"
+                    :class="[{ error: item.state.status == UploadStatus.error }, 'upload-item', 'box2']">
+                    <div class="infos">
+                        <p class="f-m">{{ item.file.name }}</p>
+                        <p class="f-s">
+                            <span v-if="item.state.percent">{{ item.state.percent }}% </span>
+                            <span v-if="!item.state.action">{{ item.state.status }}</span>
+                            <span v-if="item.state.action">{{ item.state.action }}</span>
+                            <span v-if="item.state.status == UploadStatus.progress">...</span>
+                        </p>
+                        <div v-if="item.state.percent" class="percent-wrapper">
+                            <div class="percent" :style="{ width: item.state.percent + '%' }"></div>
+                        </div>
+                    </div>
+                    <div :class="[{ lnkdisabled: inProgress }, 'remove-file', 'fl-col-c']" @click="removeFile(item.id)">
+                        <TrashIcon />
+                    </div>
+                </div>
+            </template>
+        </div>
     </form>
 </template>
 
 <style scoped lang="scss">
 .upload-comp {
     width: 100%;
-    background-color: $c-p-light;
-    outline: $bd-dash;
-    outline-offset: -5px;
-    padding: $el-size 10%;
-    position: relative;
 
     & .drop-zone {
         display: none;
     }
 
-    & .file-inputs {
-        height: calc(100% - $el-size);
+    height: calc(100% - $el-size);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: $el-tpl $el-tpl 1fr;
+    align-items: center;
+
+    & .files .upload-item {
+        position: relative;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr $el-dbl;
+        grid-template-rows: 1fr;
+
+        & .remove-file:hover {
+            color: $c-s-dark;
+            cursor: pointer;
+        }
+
+        & .percent-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            & .percent {
+                background-color: $c-dark;
+                opacity: $op-l;
+                position: absolute;
+                height: 100%;
+                left: 0;
+                top: 0;
+                border-radius: $el-rad;
+            }
+        }
+
+        &>* {
+            line-break: anywhere;
+        }
+
+        &.error>* {
+            color: $c-s-dark;
+            border-color: $c-s-dark;
+
+            & .percent {
+                background-color: $c-s-dark;
+                opacity: $op-m;
+            }
+        }
     }
 
     & .info {
         height: $el-size;
     }
 
+    & .progress {
+        display: none;
+    }
+
+    &.inprogress {
+        outline-color: $c-p-mid;
+
+        grid-template-rows: $el-tpl 1fr;
+
+        & .drop-zone,
+        .actions,
+        .select {
+            display: none;
+        }
+
+        & .remove-file {
+            opacity: $op-h;
+            cursor: default;
+
+            &:hover {
+                color: $c-dark;
+            }
+        }
+
+        & .progress {
+            display: block;
+            color: $c-light;
+            font-weight: 600;
+            font-size: $f-l;
+        }
+    }
+
     &.advanced {
         min-height: 20vh;
-        height: 1px;
 
         & .drop-zone {
             display: block;
@@ -118,3 +209,4 @@ function upload() {
     }
 }
 </style>
+@/types/files/FileUpload

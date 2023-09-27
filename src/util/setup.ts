@@ -1,7 +1,14 @@
 import { useFileStore } from '@/stores/files'
-import { getFiles } from './gql/file';
+import { getImages, getVideos } from './gql/file';
+import { useTagStore } from '@/stores/tags';
+import { getTags } from './gql/tag';
 
 export async function loadFiles() {
-    const store = useFileStore();
-    store.set(await getFiles())
+    const filesStore = useFileStore();
+    const images = await getImages();
+    const videos = await getVideos();
+    filesStore.set([...images, ...videos])
+    const tagsStore = useTagStore();
+    const tags = await getTags();
+    tagsStore.set(tags)
 }
