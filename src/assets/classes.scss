@@ -1,54 +1,5 @@
-$c-def: $c-p-light;
-$c-hov: $c-p-mid;
-
-.btn {
-    background-color: $c-def;
-    border: $bd-def;
-    padding: $el-pad;
-    border-radius: $thin;
-    cursor: pointer;
-    color: $c-dark;
-    font-weight: 600;
-    font-size: $f-m;
-
-    &:hover {
-        background-color: $c-hov;
-    }
-
-    &:disabled {
-        opacity: $op-h;
-        cursor: default;
-
-        &:hover {
-            background-color: $c-def;
-        }
-    }
-}
-
-.hov {
-    cursor: pointer;
-    color: $c-p-light;
-
-    &:hover {
-        color: $c-p-mid !important;
-    }
-}
-
-.lnk {
-    border-bottom: $bd-def;
-    cursor: pointer;
-    border-color: $c-def;
-    color: $c-def;
-    font-weight: 600;
-    font-size: $f-m;
-
-    &:hover {
-        color: $c-hov;
-        border-color: $c-hov;
-    }
-}
-
-.comp {
+.comp,
+.wrapper {
     position: relative;
 }
 
@@ -78,13 +29,18 @@ $c-hov: $c-p-mid;
     font-size: $f-s;
 }
 
-.fl-row {
+@mixin fl-row {
     display: flex;
 
     flex: {
         direction: row;
         wrap: wrap;
     }
+
+}
+
+.fl-row {
+    @include fl-row;
 
     align: {
         items: center;
@@ -95,32 +51,17 @@ $c-hov: $c-p-mid;
 }
 
 .fl-row-j {
-    display: flex;
-
-    flex: {
-        direction: row;
-        wrap: wrap;
-    }
+    @include fl-row;
 
     justify-content: space-evenly;
 }
 
 .fl-row-nj {
-    display: flex;
-
-    flex: {
-        direction: row;
-        wrap: wrap;
-    }
+    @include fl-row;
 }
 
 .fl-e2e {
-    display: flex;
-
-    flex: {
-        direction: row;
-        wrap: wrap;
-    }
+    @include fl-row;
 
     align: {
         items: center;
@@ -130,24 +71,36 @@ $c-hov: $c-p-mid;
     justify-content: space-between;
 }
 
-.fl-col {
+.list {
+    gap: $el-rad;
+}
+
+@mixin fl-col {
     display: flex;
     flex-direction: column;
+}
+
+.fl-col {
+    @include fl-col;
     align-items: center;
     justify-content: space-evenly;
 }
 
 .fl-col-c {
-    display: flex;
-    flex-direction: column;
+    @include fl-col;
     justify-content: center;
     align-items: center;
 }
 
 .fl-col-l {
-    display: flex;
-    flex-direction: column;
+    @include fl-col;
     align-items: baseline;
+    justify-content: center;
+}
+
+.fl-col-s {
+    @include fl-col;
+    align-items: stretch;
     justify-content: center;
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTagStore } from '@/stores/tags'
 import type { Tag } from '@/types/gql/response/Tag'
-import TagComp from '@/components/categories/TagComp.vue'
+import TagEditComp from '@/components/categories/TagEditComp.vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 </script>
@@ -20,23 +20,23 @@ function tagsToShow(): Tag[] {
 <template>
     <h1>Categories</h1>
     <h2>Tags</h2>
-    <div class="file-list fl-col-l">
-        <div class="filter">
-            <div class="show-deleted named-switch">
-                <span>Show deleted</span>
-                <label class="switch">
-                    <input type="checkbox" @change="showDeleted = !showDeleted">
-                    <span class="slider round"></span>
-                </label>
-            </div>
+    <div class="filter">
+        <div class="show-deleted named-switch">
+            <span>Show deleted</span>
+            <label class="switch">
+                <input type="checkbox" @change="showDeleted = !showDeleted">
+                <span class="slider round"></span>
+            </label>
         </div>
-        <TagComp v-for="tag of tagsToShow()" :key="tag.id" :tag="tag" />
     </div>
+    <TransitionGroup name="list" tag="div" class="tag-list fl-col-s">
+        <TagEditComp v-for="tag of tagsToShow()" :key="tag.id" :tag="tag" />
+    </TransitionGroup>
     <h2>Categories</h2>
 </template>
 
 <style scoped lang="scss">
-.file-list {
+.tag-list {
     padding-top: $el-rad;
     gap: $el-rad;
 }

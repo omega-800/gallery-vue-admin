@@ -2,25 +2,28 @@
 import { ref } from 'vue'
 
 const props = defineProps<{
-    name?: string
-    description?: string
+    show: boolean,
+    name?: string,
+    description?: string,
 }>()
 
 </script>
 
 <template>
-    <div class="popup-comp">
-        <div class="box popup comp">
-            <div class="name-container fl-col">
-                <p v-if="name" class="name f-l">{{ name }}</p>
-                <p v-if="description" class="description f-m">{{ description }}</p>
-            </div>
-            <button class="close btn" @click="$emit('close')">X Close</button>
-            <div class="popup-content">
-                <slot></slot>
+    <Transition name="fade">
+        <div v-if="show" class="popup-comp">
+            <div class="box popup comp">
+                <div class="name-container fl-col">
+                    <p v-if="name" class="name f-l">{{ name }}</p>
+                    <p v-if="description" class="description f-m">{{ description }}</p>
+                </div>
+                <button class="close btn" @click="$emit('close')">X Close</button>
+                <div class="popup-content">
+                    <slot></slot>
+                </div>
             </div>
         </div>
-    </div>
+    </Transition>
 </template>
 
 <style scoped lang="scss">

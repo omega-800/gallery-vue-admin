@@ -1,6 +1,6 @@
 import type { FileData, Image, Video } from "@/types/gql/response/File";
-import type { CreateFileInput, CreateVideoInput } from "@/types/gql/input/File";
-import { entityQueryFields, fillDate, makeGQLRequest, mapIdArr, stringifyForGQL } from "./request";
+import type { AlterFileInput, AlterImageInput, CreateFileInput, CreateVideoInput } from "@/types/gql/input/File";
+import { entityQueryFields, fillDate, makeGQLRequest, mapIdArr, removeNullVals, returnKeysAndDate, stringifyForGQL } from "./request";
 
 export const fileQueryFields = `
 ${entityQueryFields}
@@ -82,10 +82,22 @@ export async function setFavoriteFile(id: string, favorite: boolean): Promise<Da
         set_favorite (id:"${id}", favorite:${favorite}){date_updated}
     }`
     const response = await makeGQLRequest(query)
-    console.log(response.data, response.data.set_favorite)
     return new Date(response.data.set_favorite.date_updated)
 }
-export const mapFile = (file: any) => ({ ...fillDate(mapIdArr(file, 'tag')), entity_type: 'file' })
+
+export async function alterFile(type: 'image' | 'video', data: AlterImageInput | AlterFileInput): Promise<FileData> | never {
+    const dataWithoutNull = removeNullVals(data);
+    console.log(data, dataWithoutNull)
+    if (JSON.stringify(dataWithoutNull) == "{}" || Object.keys(dataWithoutNull).length <= 1) throw new Error('No data given')
+    const query = `mutation {
+            alter_${type} (data:${stringifyForGQL(dataWithoutNull)}){${returnKeysAndDate(dataWithoutNull)}}
+        }`
+
+    const response = await makeGQLRequest(query)
+    return mapFile(response.data[`alter_${type}`])
+}
+
+export const mapFile = (file: any) => ({ ...fillDate(mapIdArr(file, ['tags'])), entity_type: 'file' })
 //export const mapTags = (file: any) => ({ ...file, tag_ids: file.tags.map((tag: { id: string }) => tag.id) })
 
 export const onlyGqlAttrsObj = (file: any): CreateFileInput => {

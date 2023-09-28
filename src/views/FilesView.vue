@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import FileComp from '@/components/file/FileComp.vue'
+import FileEditComp from '@/components/file/FileEditComp.vue'
 import FileUpload from '@/components/file/FileUpload.vue'
 import { useFileStore } from '@/stores/files'
 import type { FileData } from '@/types/gql/response/File'
-import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 </script>
 
@@ -20,18 +19,18 @@ function filesToShow(): FileData[] {
 <template>
     <h1>Files</h1>
     <FileUpload />
-    <div class="file-list fl-col-l">
-        <div class="filter">
-            <div class="show-deleted named-switch">
-                <span>Show deleted</span>
-                <label class="switch">
-                    <input type="checkbox" @change="showDeleted = !showDeleted">
-                    <span class="slider round"></span>
-                </label>
-            </div>
+    <div class="filter">
+        <div class="show-deleted named-switch">
+            <span>Show deleted</span>
+            <label class="switch">
+                <input type="checkbox" @change="showDeleted = !showDeleted">
+                <span class="slider round"></span>
+            </label>
         </div>
-        <FileComp v-for="file of filesToShow()" :key="file.id" :file="file" />
     </div>
+    <TransitionGroup name="list" tag="div" class="file-list fl-col-s">
+        <FileEditComp v-for="file of filesToShow()" :key="file.id" :file="file" />
+    </TransitionGroup>
 </template>
 
 <style scoped lang="scss">

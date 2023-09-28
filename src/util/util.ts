@@ -45,3 +45,10 @@ export function humanTime(seconds: number): string {
     };
     return returntext.trim();
 }
+
+export function copy(to: any, from: any) {
+    console.log(to, from)
+    for (const key in from) {
+        to[key] = from[key]
+    }
+}

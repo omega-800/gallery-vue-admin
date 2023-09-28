@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import ImageIcon from '@/components/icons/IconImage.vue'
+import IconWrapper from '@/components/icons/IconWrapper.vue'
 import ImageIconSolid from '@/components/icons/IconImageSolid.vue'
 import HomeIcon from '@/components/icons/IconHome.vue'
 import HomeIconSolid from '@/components/icons/IconHomeSolid.vue'
@@ -15,14 +16,22 @@ import TagIconSolid from '@/components/icons/IconTagSolid.vue'
   <header>
     <nav>
       <RouterLink to="/" v-slot="{ isActive, isExactActive }">
-        <HomeIconSolid v-if="isActive && isExactActive" />
-        <HomeIcon v-else />
-        <span>Home</span>
+        <IconWrapper :active="isActive && isExactActive" text="Home">
+          <template #default>
+            <HomeIcon />
+          </template>
+          <template #solid>
+            <HomeIconSolid />
+          </template>
+        </IconWrapper>
       </RouterLink>
       <RouterLink to="/files" v-slot="{ isActive, isExactActive }">
         <ImageIconSolid v-if="isActive && isExactActive" />
         <ImageIcon v-else />
         <span>Files</span>
+      </RouterLink>
+      <RouterLink to="/entities">
+        <span>Entities</span>
       </RouterLink>
       <RouterLink to="/categories" v-slot="{ isActive, isExactActive }">
         <TagIconSolid v-if="isActive && isExactActive" />

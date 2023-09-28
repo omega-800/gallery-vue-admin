@@ -1,77 +1,36 @@
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { FileData } from '@/types/gql/response/File';
 import { previewPath, previewPathVid } from '@/util/file/download';
 import { isImage, isVideo, humanFileSize, humanTime } from '@/util/util';
-import StarIcon from '@/components/icons/IconStar.vue'
-import StarIconSolid from '@/components/icons/IconStarSolid.vue'
-import { setFavoriteFile } from '@/util/gql/file'
-import { ref } from 'vue';
-import { useFileStore } from '@/stores/files';
 import { useTagStore } from '@/stores/tags';
 import TagComp from '@/components/categories/TagComp.vue'
 import CompWrapper from '@/components/helpers/CompWrapper.vue';
-import FileEdit from '@/components/file/FileEdit.vue'
 
 const props = defineProps<{
     file: FileData
 }>()
-
-const fileStore = useFileStore();
 const tagStore = useTagStore();
-const tags = tagStore.tagsByFile(props.file.id)
-let isFav = ref(props.file.favorite)
-
-async function setFav() {
-    isFav.value = !props.file.favorite;
-    try {
-        let dateUpdated = await setFavoriteFile(props.file.id, isFav.value);
-        fileStore.updateProperty(props.file.id, 'date_updated', dateUpdated)
-        fileStore.updateProperty(props.file.id, 'favorite', isFav.value)
-    } catch (err) {
-        alert(err)
-        isFav.value = !isFav.value
-    }
-}
-/*
-const fields: { [key: string]: any } = {
-    name: props.file.name || 'Insert name',
-    alt: 'Insert alt text',
-    edited: !!props.file.edited,
-}
-
-function handleFormCallback(fields: { [key: string]: any }) {
-    console.log(fields)
-}
-*/
+const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 </script>
 
 <template>
-    <CompWrapper :entity-store="fileStore" :entity-id="file.id" :classes="['box']">
-        <template v-slot:form>
-            <!--EditForm :fields="fields" @submitted="handleFormCallback" /-->
-            <FileEdit :file="file" />
-        </template>
-        <template v-slot:options>
-            <div class="favorite hov" @click="setFav()">
-                <StarIconSolid v-if="file.favorite" />
-                <StarIcon v-else />
-            </div>
-        </template>
-        <template v-slot:main>
-            <div class="name-container fl-col">
-                <p class="main-name f-l">{{ file.name || file.file_name_orig }}</p>
-                <p v-if="file.name">{{ file.file_name_orig }}</p>
-                <p>{{ file.__typename }} {{ file.id }}</p>
-            </div>
-            <div class="tags fl-row">
-                <TagComp v-for=" tag  in  tags " :key="tag.id" :tag="tag" />
-            </div>
-            <div class="content">
-                <img v-if="isImage(file)" :src="previewPath(file.file_name)" class="file">
-                <video v-if="isVideo(file)" class="file" constrols>
-                    <source :src="previewPathVid(file.file_name)" type="video/webm">
-                </video>
+    <CompWrapper :entity="file" :classes="['box']">
+        <div class="name-container fl-col">
+            <p class="main-name f-l">{{ file.name || file.file_name_orig }}</p>
+            <p v-if="file.name">{{ file.file_name_orig }}</p>
+            <p>{{ file.__typename }} {{ file.id }}</p>
+        </div>
+        <div class="tags fl-row">
+            <TagComp v-for="tag in tags" :key="tag.id" :tag="tag" />
+        </div>
+        <div class="content">
+            <img v-if="isImage(file)" :src="previewPath(file.file_name)" class="file">
+            <video v-if="isVideo(file)" class="file" constrols>
+                <source :src="previewPathVid(file.file_name)" type="video/webm">
+            </video>
+            <Transition name="fade">
                 <table class="info-container">
                     <tr>
                         <th>Property</th>
@@ -130,8 +89,8 @@ function handleFormCallback(fields: { [key: string]: any }) {
                         <td>{{ file.id }}</td>
                     </tr>
                 </table>
-            </div>
-        </template>
+            </Transition>
+        </div>
     </CompWrapper>
 </template>
 
@@ -179,7 +138,7 @@ function handleFormCallback(fields: { [key: string]: any }) {
             color: $c-p-light;
             border-collapse: collapse;
             background-color: $c-dark;
-            transition: opacity $tr-def;
+            transition: $tr-op-def;
 
             & tr {
                 border-bottom: $thin solid $c-p-light;

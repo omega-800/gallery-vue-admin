@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import type { Tag } from '@/types/gql/response/Tag'
-import CompWrapper from '@/components/helpers/CompWrapper.vue';
+import { useTagStore } from '@/stores/tags';
+import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
+import TagComp from '@/components/categories/TagComp.vue';
 import { ref } from 'vue'
 
 const { tag } = defineProps<{
     tag: Tag
 }>()
+const tagStore = useTagStore()
 const showDesc = ref(false)
 </script>
 
 <template>
-    <CompWrapper :entity="tag" :classes="['fl-col-c']">
-        <p class="name f-s">{{ tag.name }}</p>
-        <p v-if="tag.description && showDesc" class="description f-s">{{ tag.description }}</p>
-    </CompWrapper>
+    <EditCompWrapper :entity-store="tagStore" :entity-id="tag.id">
+        <template #form>
+            <div>Insert form</div>
+        </template>
+        <template #main>
+            <TagComp :tag="tag" />
+        </template>
+    </EditCompWrapper>
 </template>
 
 <style scoped lang="scss">

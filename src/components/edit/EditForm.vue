@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { isEntity, getEntityInfo, type EntityType } from '@/util/entities';
 import { ref, reactive, computed } from 'vue';
+import SelectEntityList from '@/components/edit/SelectEntityList.vue';
 //import { FormField } from '@/types/Form'
 
 const props = defineProps<{
@@ -13,6 +15,19 @@ function cancel() {
     filledFields.data = {};
 }
 const hasInput = computed(() => JSON.stringify(filledFields.data) != '{}')
+
+const isSelectEntities = (key: any): boolean => key.endsWith('_ids') && isEntity(key.slice(0, -4))
+const getEntitiesKey = (key: any): EntityType => key.slice(0, -4) as EntityType
+function setValues(key: any, values: string[]) {
+    console.log(filledFields, values)
+    filledFields.data[key] = values
+}
+
+const isSelectEntity = (key: any): boolean => key.endsWith('_id') && isEntity(key.slice(0, -3))
+const getEntityKey = (key: any): EntityType => key.slice(0, -3) as EntityType
+function setValue(key: any, value: string) {
+    filledFields.data[key] = value
+}
 
 function inputType(value: any): string {
     let valueType = typeof value;
@@ -32,13 +47,21 @@ function inputType(value: any): string {
             </button>
             <button v-if="hasInput" class="btn" @click="cancel()">X Cancel</button>
         </div>
-        <div class="inputs">
-            <template v-for="(value, key, index) in fields" :key="index">
-                <label :for="`${key}${index}`">{{ key }}</label>
-                <input :type="inputType(value)" :name="`${key}${index}`" :placeholder="value"
-                    v-model="filledFields.data[key]">
+        <template v-for="(value, key, index) in fields" :key="index">
+            <template v-if="isSelectEntities(key)">
+                <SelectEntityList :entity-type="getEntityInfo(getEntitiesKey(key))" :selected_ids="value"
+                    @changed="(value) => setValues(key, value)" />
             </template>
-        </div>
+            <template v-else-if="isSelectEntity(key)">
+            </template>
+            <template v-else>
+                <div class="inputs">
+                    <label :for="`${key}${index}`">{{ key }}</label>
+                    <input :type="inputType(value)" :name="`${key}${index}`" :placeholder="value"
+                        v-model="filledFields.data[key]">
+                </div>
+            </template>
+        </template>
     </form>
 </template>
 

@@ -35,8 +35,8 @@ export const useTagStore = defineStore("tags", {
         byId(state) {
             return (id: string) => state.tags.find(tag => tag.id === id);
         },
-        tagsByFile(state) {
-            return (file_id: string) => state.tags.filter(tag => tag.file_ids.includes(file_id));
+        byIds(state) {
+            return (ids: string[]) => state.tags.filter(tag => ids.includes(tag.id));
         },
         deleted(state) {
             return state.tags.filter(tag => tag.date_deleted != undefined)

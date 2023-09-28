@@ -23,6 +23,13 @@ export const useFileStore = defineStore("files", {
         add(file: FileData) {
             this.files.push(file);
         },
+        updateProperties(id: string, data: any) {
+            //this.$patch((state) => {})
+            const file = this.files.find(f => f.id == id)
+            if (file) {
+                Object.assign(file, data);
+            }
+        },
         addMultiple(files: FileData[]) {
             this.files.push(...files);
         },
@@ -30,6 +37,9 @@ export const useFileStore = defineStore("files", {
     getters: {
         byId(state) {
             return (id: string) => state.files.find(file => file.id === id);
+        },
+        byIds(state) {
+            return (ids: string[]) => state.files.filter(file => ids.includes(file.id));
         },
         deleted(state) {
             return state.files.filter(file => file.date_deleted != undefined)

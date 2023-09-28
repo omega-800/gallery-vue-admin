@@ -5,7 +5,6 @@ const props = defineProps<{
     name?: string,
     description?: string
 }>()
-const hasInput = false;
 </script>
 
 <template>
@@ -15,20 +14,18 @@ const hasInput = false;
             <p v-if="name" class="name f-l">{{ name }}</p>
             <p v-if="description" class="description f-m">{{ description }}</p>
         </div>
-        <div class="actions fl-e2e">
-            <button class="btn" type="submit" :disabled="!hasInput">
-                {{ !hasInput ? 'Submit (input data first) ' : `Submit` }}
-            </button>
-            <button v-if="hasInput" class="btn" @click="$emit('cancelled')">X Cancel</button>
-        </div>
         <div class="inputs">
             <slot name="inputs"></slot>
+        </div>
+        <div class="actions fl-e2e">
+            <button class="btn" type="submit">Submit</button>
+            <button class="btn" @click="$emit('cancelled')">X Cancel</button>
         </div>
     </form>
 </template>
 
 <style scoped lang="scss">
-.inputs {
+/*.inputs {
     width: 100%;
     display: grid;
     grid-template-columns: auto auto;
@@ -38,5 +35,5 @@ const hasInput = false;
         width: 100%;
         justify-self: start;
     }
-}
+}*/
 </style>

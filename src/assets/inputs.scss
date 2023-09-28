@@ -1,3 +1,56 @@
+$c-def: $c-p-light;
+$c-hov: $c-p-mid;
+
+.btn {
+    background-color: $c-def;
+    border: $bd-def;
+    padding: $el-pad;
+    border-radius: $thin;
+    cursor: pointer;
+    color: $c-dark;
+    font-weight: 600;
+    font-size: $f-m;
+    transition: $tr-op-def, $tr-c-def;
+
+    &:hover {
+        background-color: $c-hov;
+    }
+
+    &:disabled {
+        opacity: $op-h;
+        cursor: default;
+
+        &:hover {
+            background-color: $c-def;
+        }
+    }
+}
+
+.hov {
+    cursor: pointer;
+    color: $c-def;
+    transition: $tr-c-def;
+
+    &:hover {
+        color: $c-hov !important;
+    }
+}
+
+.lnk {
+    border-bottom: $bd-def;
+    cursor: pointer;
+    border-color: $c-def;
+    color: $c-def;
+    font-weight: 600;
+    font-size: $f-m;
+    transition: $tr-c-def;
+
+    &:hover {
+        color: $c-hov;
+        border-color: $c-hov;
+    }
+}
+
 .custom-input {
     & input {
         width: 0.1px;
@@ -19,6 +72,15 @@
     }
 }
 
+.input-group {
+    width: 100%;
+
+    &>* {
+        width: 50%;
+        display: inline-block;
+    }
+}
+
 input[type=text],
 input[type=number],
 input[type=checkbox] {
@@ -29,4 +91,8 @@ input[type=checkbox] {
     color: $c-dark;
     height: $el-dbl;
     margin: 0;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
 }

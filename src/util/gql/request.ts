@@ -38,9 +38,24 @@ export async function makeGQLRequest(queryStr: string): Promise<{ data: any }> |
     }
 }
 
+export const returnKeysAndDate = (obj: any): string => Object.keys(obj).map(key => idToName(key)).join(' ') + ' date_updated'
 export const stringifyForGQL = (obj: any): string => JSON.stringify(obj).replace(/"([^(")"]+[^\\"]+)":/g, "$1:")
-export const mapIdArr = (obj: any, propname: string) => ({ ...obj, [`${propname}_ids`]: obj[`${pluralName(propname)}`].map((item: { id: string }) => item.id) })
 export const pluralName = (name: string): string => name.endsWith('y') ? name.slice(0, -1) + 'ies' : name + 's'
+export const singularName = (name: string): string => name.endsWith('ies') ? name.slice(0, -3) + 'y' : name.slice(0, -1)
+const idField = ' { id }'
+export const idToName = (name: string): string => name.endsWith('_id') ? name.slice(0, -3) + idField : name.endsWith('_ids') ? pluralName(name.slice(0, -4)) + idField : name
+
+export function mapIdArr(obj: any, propnames: string[]) {
+    return {
+        ...obj, ...propnames.reduce((newObj: any, key: string) => {
+            const values = obj[key as keyof typeof obj];
+            if (values !== undefined && values !== null) {
+                newObj[singularName(key) + '_ids'] = values.map((item: { id: string }) => item.id);
+            }
+            return newObj;
+        }, {})
+    }
+}
 
 export function fillDate(file: any): any {
     if (file.date_added) {
@@ -53,4 +68,14 @@ export function fillDate(file: any): any {
         file.date_updated = new Date(file.date_updated)
     }
     return file
+}
+
+export function removeNullVals(data: any) {
+    return Object.keys(data).reduce((newObj: any, key) => {
+        const value = data[key as keyof typeof data];
+        if (value !== null) {
+            newObj[key] = value;
+        }
+        return newObj;
+    }, {});
 }

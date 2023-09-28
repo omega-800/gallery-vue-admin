@@ -17,4 +17,4 @@ export async function getTags(): Promise<Tag[]> {
     const response = await makeGQLRequest(query)
     return response.data.tags.map((tag: any) => mapTag(tag))
 }
-export const mapTag = (tag: any) => ({ ...fillDate(mapIdArr(tag, 'file')), entity_type: 'tag' })
+export const mapTag = (tag: any) => ({ ...fillDate(mapIdArr(tag, ['files'])), entity_type: 'tag' })

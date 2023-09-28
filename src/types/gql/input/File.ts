@@ -1,3 +1,5 @@
+import type { Identifiable } from "./Identifiable"
+
 export interface CreateFileInput {
     file_type: string
     file_name: string
@@ -15,10 +17,13 @@ export interface CreateVideoInput extends CreateFileInput {
     fps_prev: number
 }
 
-export interface AdditionalFileInput {
+export interface AlterFileInput extends Identifiable {
     name?: string,
     edited?: boolean,
+    tag_ids?: string[]
+    /* galleries: Gallery[];
+    shop_items?: ShopItem[] | null */
 }
-export interface AdditionalImageInput extends AdditionalFileInput {
+export interface AlterImageInput extends AlterFileInput {
     alt?: string,
 }

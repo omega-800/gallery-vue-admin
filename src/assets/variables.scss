@@ -35,4 +35,7 @@ $op-l: 0.3;
 $op-m: 0.5;
 $op-h: 0.8;
 
-$tr-def: 0.5s ease;
+$tr-t-def: 0.25s;
+$tr-m-def: ease;
+$tr-op-def: opacity $tr-t-def $tr-m-def;
+$tr-c-def: color $tr-t-def $tr-m-def, background-color $tr-t-def $tr-m-def, border-color $tr-t-def $tr-m-def, outline-color $tr-t-def $tr-m-def, border-right $tr-t-def $tr-m-def, border-top $tr-t-def $tr-m-def, border-bottom $tr-t-def $tr-m-def, border-left $tr-t-def $tr-m-def;
