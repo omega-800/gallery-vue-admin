@@ -12,7 +12,7 @@ export async function makeGQLRequest(queryStr: string): Promise<{ data: any }> |
     const endpoint = `http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}${import.meta.env.VITE_API_PATH}`;
 
     const query = JSON.stringify({ query: queryStr })
-
+    console.log(query)
     const headers = {
         "content-type": "application/json",
         //'Content-Length': query.length.toString(),
@@ -38,7 +38,7 @@ export async function makeGQLRequest(queryStr: string): Promise<{ data: any }> |
     }
 }
 
-export const returnKeysAndDate = (obj: any): string => Object.keys(obj).map(key => idToName(key)).join(' ') + ' date_updated'
+export const returnKeysAndDate = (obj: any, added?: boolean): string => Object.keys(obj).map(key => idToName(key)).join(' ') + (added ? entityQueryFields : ' date_updated')
 export const stringifyForGQL = (obj: any): string => JSON.stringify(obj).replace(/"([^(")"]+[^\\"]+)":/g, "$1:")
 export const pluralName = (name: string): string => name.endsWith('y') ? name.slice(0, -1) + 'ies' : name + 's'
 export const singularName = (name: string): string => name.endsWith('ies') ? name.slice(0, -3) + 'y' : name.slice(0, -1)

@@ -3,11 +3,12 @@ import { useTagStore } from '@/stores/tags'
 import type { Tag } from '@/types/gql/response/Tag'
 import { getEntityInfo } from '@/util/entities'
 import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
-import EditForm from '@/components/edit/EditForm.vue';
+import SwitchComp from '@/components/edit/SwitchComp.vue';
 import LoadingComp from '@/components/helpers/LoadingComp.vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { addTag } from '@/util/gql/tag';
+import CompActionForm from '@/components/edit/CompActionForm.vue';
 </script>
 
 <script lang="ts">
@@ -40,15 +41,9 @@ async function submitNew(data: any) {
     <h1>Categories</h1>
     <h2>Tags</h2>
     <LoadingComp v-if="isLoading" />
-    <EditForm :fields="fields" @submitted="submitNew" />
+    <CompActionForm :action="'add'" :entity-type="getEntityInfo('tag')" />
     <div class="filter">
-        <div class="show-deleted named-switch">
-            <span>Show deleted</span>
-            <label class="switch">
-                <input type="checkbox" @change="showDeleted = !showDeleted">
-                <span class="slider round"></span>
-            </label>
-        </div>
+        <SwitchComp text="Show deleted" @altered="showDeleted = !showDeleted" />
     </div>
     <TransitionGroup name="list" tag="div" class="tag-list fl-col-s">
         <EditCompWrapper v-for="tag of tagsToShow()" :key="tag.id" :entity-type="getEntityInfo('tag')"

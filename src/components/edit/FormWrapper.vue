@@ -3,23 +3,25 @@ import { ref, reactive, computed } from 'vue';
 
 const props = defineProps<{
     name?: string,
-    description?: string
+    description?: string,
+    hasInput?: boolean
 }>()
 </script>
 
 <template>
-    <form :class="['form-comp', 'comp']" action="" method="POST" enctype="multipart/form-data"
-        @submit.prevent="$emit('submitted')">
+    <form :class="['form-comp', 'comp', 'box']" action="" method="POST" @submit.prevent.stop>
         <div class="name-container fl-col">
             <p v-if="name" class="name f-l">{{ name }}</p>
             <p v-if="description" class="description f-m">{{ description }}</p>
         </div>
         <div class="inputs">
-            <slot name="inputs"></slot>
+            <slot></slot>
         </div>
         <div class="actions fl-e2e">
-            <button class="btn" type="submit">Submit</button>
-            <button class="btn" @click="$emit('cancelled')">X Cancel</button>
+            <button class="btn" :disabled="!hasInput" @click="$emit('submitted')">
+                {{ !hasInput ? 'Submit (input data first) ' : `Submit` }}
+            </button>
+            <button v-if="hasInput" class="btn" @click="$emit('cancelled')">X Cancel</button>
         </div>
     </form>
 </template>

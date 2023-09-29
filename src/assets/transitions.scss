@@ -8,6 +8,16 @@
     opacity: 0;
 }
 
+.fadeicon-enter-active,
+.fadeicon-leave-active {
+    transition: $tr-op-def;
+}
+
+.fadeicon-enter-from,
+.fadeicon-leave-to {
+    opacity: 0;
+}
+
 .list-enter-active,
 .list-leave-active {
     transition: all $tr-t-def $tr-m-def;

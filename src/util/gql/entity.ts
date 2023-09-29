@@ -34,14 +34,24 @@ export async function getEntities(type: 'image' | 'video' | EntityType, queryFie
     return response.data[pluralName(type)].map((e: any) => mapEntity(e, type))
 }
 
-export async function addEntity(type: 'image' | 'video' | EntityType, attrs: any, queryFields: string): Promise<any> | never {
+export async function addEntity(type: 'image' | 'video' | EntityType, data: any): Promise<any> | never {
+    const dataWithoutNull = removeNullVals(data);
+    if (JSON.stringify(dataWithoutNull) == "{}" || Object.keys(dataWithoutNull).length <= 1) throw new Error('No data given')
+    const query = `mutation {
+            create_${type} (data:${stringifyForGQL(data)}){${returnKeysAndDate(dataWithoutNull, true)}}
+        }`
+    console.log(query)
+    const response = await makeGQLRequest(query)
+    return mapEntity(response.data[`create_${type}`], type)
+}
+/* export async function addEntity(type: 'image' | 'video' | EntityType, attrs: any, queryFields: string): Promise<any> | never {
     const query = `mutation {
             create_${type} (data:${stringifyForGQL(attrs)}){${queryFields}}
         }`
 
     const response = await makeGQLRequest(query)
     return mapEntity(response.data[`create_${type}`], type)
-}
+} */
 
 export async function setFavorite(type: 'image' | 'video' | EntityType, id: string, favorite: boolean): Promise<Date> {
     const query = `mutation {

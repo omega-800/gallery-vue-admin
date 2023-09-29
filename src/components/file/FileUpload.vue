@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
 import { uploadFiles } from '@/util/file/upload'
 import { useUploadStore } from '@/stores/upload';
 import { storeToRefs } from 'pinia';
 import { UploadStatus } from '@/types/files/FileUpload'
-import TrashIcon from '@/components/icons/IconTrash.vue'
+import ToggleIconTrash from '@/components/icons/toggle/ToggleIconTrash.vue'
 
 const uploadStore = useUploadStore()
 
@@ -79,9 +78,7 @@ function upload() {
                             <div class="percent" :style="{ width: item.state.percent + '%' }"></div>
                         </div>
                     </div>
-                    <div :class="[{ lnkdisabled: inProgress }, 'remove-file', 'fl-col-c']" @click="removeFile(item.id)">
-                        <TrashIcon />
-                    </div>
+                    <ToggleIconTrash :active="false" :disabled="inProgress" @click="removeFile(item.id)" />
                 </div>
             </template>
         </div>
@@ -108,11 +105,6 @@ function upload() {
         display: grid;
         grid-template-columns: 1fr $el-dbl;
         grid-template-rows: 1fr;
-
-        & .remove-file:hover {
-            color: $c-s-dark;
-            cursor: pointer;
-        }
 
         & .percent-wrapper {
 

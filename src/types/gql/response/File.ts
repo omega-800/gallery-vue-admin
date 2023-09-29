@@ -27,9 +27,3 @@ export interface Video extends FileData {
     fps: number
     fps_prev: number
 }
-
-export interface Gallery extends Entry {
-    name: string
-    file_ids: string[]
-    //shop_item_ids: string[]
-}

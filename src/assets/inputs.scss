@@ -26,13 +26,21 @@ $c-hov: $c-p-mid;
     }
 }
 
+.lnkdisabled {
+    cursor: default !important;
+
+    &:hover {
+        color: $c-def !important;
+    }
+}
+
 .hov {
     cursor: pointer;
     color: $c-def;
     transition: $tr-c-def;
 
     &:hover {
-        color: $c-hov !important;
+        color: $c-hov;
     }
 }
 
@@ -48,6 +56,19 @@ $c-hov: $c-p-mid;
     &:hover {
         color: $c-hov;
         border-color: $c-hov;
+    }
+}
+
+.named-switch,
+.named-btn {
+    &>* {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &>span {
+        font-size: $f-l;
+        padding-left: $el-pad;
     }
 }
 

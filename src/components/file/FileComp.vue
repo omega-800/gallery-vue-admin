@@ -16,7 +16,7 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 </script>
 
 <template>
-    <CompWrapper :entity="file" :classes="['box']">
+    <CompWrapper :entity="file" :class="['box']">
         <div class="name-container fl-col">
             <p class="main-name f-l">{{ file.name || file.file_name_orig }}</p>
             <p v-if="file.name">{{ file.file_name_orig }}</p>
@@ -26,7 +26,7 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
             <TagComp v-for="tag in tags" :key="tag.id" :tag="tag" />
         </div>
         <div class="content">
-            <img v-if="isImage(file)" :src="previewPath(file.file_name)" class="file">
+            <img v-if="isImage(file)" :src="previewPath(file.file_name)" :alt="file.alt || ''" class="file">
             <video v-if="isVideo(file)" class="file" constrols>
                 <source :src="previewPathVid(file.file_name)" type="video/webm">
             </video>
@@ -100,18 +100,6 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 
     &.isfavorite {
         outline-color: $c-s-light;
-
-        & .favorite {
-            color: $c-s-light;
-        }
-    }
-
-    &.isdeleted {
-        outline-color: $c-light;
-
-        & .delete {
-            color: $c-light;
-        }
     }
 
     & .name-container {

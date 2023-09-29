@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import ImageIcon from '@/components/icons/IconImage.vue'
-import IconWrapper from '@/components/icons/IconWrapper.vue'
-import ImageIconSolid from '@/components/icons/IconImageSolid.vue'
-import HomeIcon from '@/components/icons/IconHome.vue'
-import HomeIconSolid from '@/components/icons/IconHomeSolid.vue'
-import TagIcon from '@/components/icons/IconTag.vue'
-import TagIconSolid from '@/components/icons/IconTagSolid.vue'
+import ToggleIconHome from '@/components/icons/toggle/ToggleIconHome.vue'
+import ToggleIconFolder from '@/components/icons/toggle/ToggleIconFolder.vue'
+import ToggleIconCategories from '@/components/icons/toggle/ToggleIconCategories.vue'
+import ToggleIconTag from '@/components/icons/toggle/ToggleIconTag.vue'
 </script>
 
 <script lang="ts">
@@ -16,32 +13,29 @@ import TagIconSolid from '@/components/icons/IconTagSolid.vue'
   <header>
     <nav>
       <RouterLink to="/" v-slot="{ isActive, isExactActive }">
-        <IconWrapper :active="isActive && isExactActive" text="Home">
-          <template #default>
-            <HomeIcon />
-          </template>
-          <template #solid>
-            <HomeIconSolid />
-          </template>
-        </IconWrapper>
+        <ToggleIconHome :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
       </RouterLink>
       <RouterLink to="/files" v-slot="{ isActive, isExactActive }">
-        <ImageIconSolid v-if="isActive && isExactActive" />
-        <ImageIcon v-else />
-        <span>Files</span>
+        <ToggleIconFolder :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
       </RouterLink>
       <RouterLink to="/entities">
         <span>Entities</span>
       </RouterLink>
       <RouterLink to="/categories" v-slot="{ isActive, isExactActive }">
-        <TagIconSolid v-if="isActive && isExactActive" />
-        <TagIcon v-else />
-        <span>Categories</span>
+        <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
+      </RouterLink>
+      <RouterLink to="/tags" v-slot="{ isActive, isExactActive }">
+        <ToggleIconTag :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
+          text="Tags" />
+      </RouterLink>
+      <RouterLink to="/galleries" v-slot="{ isActive, isExactActive }">
+        <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
+          text="Galleries" />
       </RouterLink>
     </nav>
   </header>
   <main>
-    <RouterView />
+    <RouterView :key="$route.path" />
   </main>
 </template>
 
@@ -61,14 +55,6 @@ header {
 
     a {
       font-weight: bold;
-      color: $c-p-light;
-      display: flex;
-      align-items: center;
-      gap: $el-pad;
-
-      &.router-link-exact-active {
-        color: $c-light;
-      }
     }
   }
 }

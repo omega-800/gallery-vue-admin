@@ -1,17 +1,21 @@
 <script setup lang="ts">
 
-const { entity, classes } = defineProps<{
+const { entity } = defineProps<{
     entity: any,
-    classes?: string[]
 }>()
 
 </script>
 
 <template>
     <div
-        :class="[{ isfavorite: !!entity.favorite, isdeleted: !!entity.date_deleted }, entity.entity_type + '-comp', 'comp', ...classes]">
+        :class="[{ isfavorite: !!entity.favorite, isdeleted: !!entity.date_deleted }, entity.entity_type + '-comp', 'comp']">
         <slot></slot>
     </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.isdeleted {
+    outline-color: $c-dark;
+    background-color: $c-light;
+}
+</style>

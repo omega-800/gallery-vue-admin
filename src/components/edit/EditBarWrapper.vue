@@ -20,5 +20,6 @@ const props = defineProps<{
     right: 0;
     background-color: $c-p-dark;
     flex-wrap: nowrap;
+    border-radius: $el-pad;
 }
 </style>

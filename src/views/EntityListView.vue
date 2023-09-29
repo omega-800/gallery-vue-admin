@@ -1,53 +1,39 @@
 <script setup lang="ts">
 import SearchComp from '@/components/filter/SearchComp.vue';
-import type { Entry } from '@/types/gql/response/Entry';
 import type { EntityInfo, EntityType } from '@/util/entities';
 import { pluralName } from '@/util/gql/request';
-import { getEntityInfo, isEntity, entities } from '@/util/entities'
-import { ref, computed, reactive } from 'vue'
+import { entityUtil } from '@/util/entities'
 import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
+import SwitchComp from '@/components/edit/SwitchComp.vue';
+//import CreateCompForm from '@/components/edit/CreateCompForm.vue';
+import CompActionForm from '@/components/edit/CompActionForm.vue';
+import { ref } from 'vue'
 
-const { entityType } = defineProps<{
+const props = defineProps<{
     entityType: EntityInfo
 }>()
-let store = entityType.store()
-const type = reactive(JSON.parse(JSON.stringify(entityType)))
-const showDeleted = ref(false)
-const entries: Entry[] = reactive([])
-refreshEntries()
+console.log(props.entityType)
 
-function refreshEntries(setDel?: boolean) {
-    if (setDel) showDeleted.value = !showDeleted.value;
-    let entities = showDeleted.value ? store.deleted : store.available;
-    entries.length = 0;
-    entries.push(...entities.sort((a: Entry, b: Entry) => b.date_added.getTime() - a.date_added.getTime()))
-}
-function setType(val: string) {
-    if (!isEntity(val)) return;
-    const newType = getEntityInfo(val);
-    store = newType.store();
-    type.value = null;
-    Object.assign(type, newType)
-    refreshEntries()
+const showDeleted = ref(false)
+
+function setSearch(val: string) {
+    console.log(val,)
 }
 </script>
 
 <template>
-    <div :class="type.name + '-view list-view view'">
-        <h1>{{ pluralName(type.display_name) }}</h1>
-        <SearchComp @submitted="setType" />
+    <div :class="entityType.name + '-view list-view view'">
+        <h1>{{ pluralName(entityType.display_name) }}</h1>
+        <!--CreateCompForm :entity-type="entityType" /-->
+        <CompActionForm :action="'add'" :entity-type="entityType" />
         <!--FilterComp/-->
-        <div class="filter">
-            <div class="show-deleted named-switch">
-                <label class="switch">
-                    <input type="checkbox" @change="refreshEntries(true)">
-                    <span class="slider round"></span>
-                </label>
-                <span>Show deleted</span>
-            </div>
+        <div class="filter box">
+            <SearchComp :placeholder="'Search ' + pluralName(entityType.display_name)" @submitted="setSearch" />
+            <SwitchComp text="Show deleted" @altered="showDeleted = !showDeleted" />
         </div>
-        <TransitionGroup name="list" tag="div" :class="[type.name + '-list', 'list', 'fl-col-s']">
-            <EditCompWrapper v-for="entity of entries" :key="entity.id" :entity-type="type" :entity-id="entity.id" />
+        <TransitionGroup name="list" tag="div" :class="[entityType.name + '-list', 'list', 'fl-col-s']">
+            <EditCompWrapper v-for="entity of entityUtil.deleted(entityType, showDeleted)" :key="entity.id"
+                :entity-type="entityType" :entity-id="entity.id" />
         </TransitionGroup>
     </div>
 </template>

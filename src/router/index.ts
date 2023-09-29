@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { entities, getEntityInfo } from '@/util/entities'
+import EntityListView from '../views/EntityListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,15 +22,31 @@ const router = createRouter({
     {
       path: '/entities',
       name: 'entities',
-      component: () => import('../views/EntityListView.vue'),
+      component: () => import('../views/SwitchableListView.vue'),
       props: {
         entityType: getEntityInfo('file')
+      }
+    },
+    {
+      path: '/tags',
+      name: 'tags',
+      component: EntityListView,
+      props: {
+        entityType: getEntityInfo('tag')
       }
     },
     {
       path: '/categories',
       name: 'categories',
       component: () => import('../views/CategoriesView.vue')
+    },
+    {
+      path: '/galleries',
+      name: 'galleries',
+      component: EntityListView,
+      props: {
+        entityType: getEntityInfo('gallery')
+      }
     }
   ]
 })

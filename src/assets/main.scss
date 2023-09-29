@@ -3,7 +3,6 @@
 @import './screens.scss';
 @import './classes.scss';
 @import './inputs.scss';
-@import './switch.scss';
 
 body {
   margin: 0;
@@ -32,6 +31,10 @@ body {
 
   & p {
     margin: 0;
+  }
+
+  a {
+    text-decoration: none;
   }
 }
 

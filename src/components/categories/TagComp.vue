@@ -4,13 +4,14 @@ import CompWrapper from '@/components/helpers/CompWrapper.vue';
 import { ref } from 'vue'
 
 const { tag } = defineProps<{
-    tag: Tag
+    tag: Tag,
+    selectable?: boolean
 }>()
 const showDesc = ref(false)
 </script>
 
 <template>
-    <CompWrapper :entity="tag" :classes="['fl-col-c']">
+    <CompWrapper :entity="tag" :class="[{ selectable: !!selectable }, 'fl-col-c']">
         <p class="name f-s">{{ tag.name }}</p>
         <p v-if="tag.description && showDesc" class="description f-s">{{ tag.description }}</p>
     </CompWrapper>
@@ -22,24 +23,23 @@ const showDesc = ref(false)
     border-radius: 0 $el-pad $el-pad 0;
     height: $el-dbl;
     padding: 0 $el-pad;
-    cursor: pointer;
     margin-left: $el-size + $thin;
     //transition: $tr-c-def;
 
     &.isdeleted {
-        background-color: $c-light;
         @include outline-def;
+        outline-offset: -#{$thin};
 
         &::after {
-            border-right: $el-size solid $c-light;
+            border-right: $el-size solid $c-dark;
         }
 
         &::before {
-            background-color: $c-dark;
+            background-color: $c-light;
         }
     }
 
-    &.isfavorite {
+    @mixin orangetag {
         background-color: $c-s-light;
 
         &::after {
@@ -51,11 +51,29 @@ const showDesc = ref(false)
         }
     }
 
-    &:hover {
-        background-color: $c-p-mid;
 
-        &::after {
-            border-right: $el-size solid $c-p-mid;
+    &.isfavorite {
+        @include orangetag;
+
+    }
+
+    &.selectable {
+        cursor: pointer;
+
+        &:hover {
+            background-color: $c-p-mid;
+
+            &::after {
+                border-right: $el-size solid $c-p-mid;
+            }
+        }
+
+        &.isfavorite {
+
+            &:hover {
+                @include orangetag;
+                opacity: $op-h;
+            }
         }
     }
 
