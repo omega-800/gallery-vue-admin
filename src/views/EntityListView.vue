@@ -5,11 +5,11 @@ import type { EntityInfo, EntityType } from '@/util/entities';
 import { pluralName } from '@/util/gql/request';
 import { getEntityInfo, isEntity, entities } from '@/util/entities'
 import { ref, computed, reactive } from 'vue'
+import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
 
 const { entityType } = defineProps<{
     entityType: EntityInfo
 }>()
-
 let store = entityType.store()
 const type = reactive(JSON.parse(JSON.stringify(entityType)))
 const showDeleted = ref(false)
@@ -26,6 +26,7 @@ function setType(val: string) {
     if (!isEntity(val)) return;
     const newType = getEntityInfo(val);
     store = newType.store();
+    type.value = null;
     Object.assign(type, newType)
     refreshEntries()
 }
@@ -46,8 +47,7 @@ function setType(val: string) {
             </div>
         </div>
         <TransitionGroup name="list" tag="div" :class="[type.name + '-list', 'list', 'fl-col-s']">
-            <component :is="type.name+'-edit-comp'" v-for="entity of entries" :key="entity.id" :[type.name]="entity">
-            </component>
+            <EditCompWrapper v-for="entity of entries" :key="entity.id" :entity-type="type" :entity-id="entity.id" />
         </TransitionGroup>
     </div>
 </template>

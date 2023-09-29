@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { FileData } from "@/types/gql/response/File";
+import { isImage } from "@/util/util";
 
 export type FilesState = {
     files: FileData[];
@@ -46,6 +47,21 @@ export const useFileStore = defineStore("files", {
         },
         available(state) {
             return state.files.filter(file => file.date_deleted == undefined)
+        },
+        fields(state) {
+            return (id: string) => {
+                const file = state.files.find(file => file.id === id);
+                if (!file) return;
+                const fields: any = {
+                    edited: file.edited,
+                    name: file.name,
+                    /* galleries: Gallery[];
+                    shop_items?: ShopItem[] | null */
+                }
+                if (isImage(file)) fields.alt = file.alt
+                fields.tag_ids = JSON.parse(JSON.stringify(file.tag_ids))
+                return fields;
+            }
         }
     },
 });

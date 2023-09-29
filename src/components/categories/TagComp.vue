@@ -26,6 +26,31 @@ const showDesc = ref(false)
     margin-left: $el-size + $thin;
     //transition: $tr-c-def;
 
+    &.isdeleted {
+        background-color: $c-light;
+        @include outline-def;
+
+        &::after {
+            border-right: $el-size solid $c-light;
+        }
+
+        &::before {
+            background-color: $c-dark;
+        }
+    }
+
+    &.isfavorite {
+        background-color: $c-s-light;
+
+        &::after {
+            border-right: $el-size solid $c-s-light;
+        }
+
+        &::before {
+            background-color: $c-dark;
+        }
+    }
+
     &:hover {
         background-color: $c-p-mid;
 

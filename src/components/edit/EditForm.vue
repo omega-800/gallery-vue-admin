@@ -9,17 +9,16 @@ const props = defineProps<{
 }>()
 
 let inProgress = ref(false)
-let filledFields: { data: { [key: string]: any } } = reactive({ data: {} })
+let filledFields: { data: { [key: string]: any } } = reactive({ data: JSON.parse(JSON.stringify(props.fields)) })
 
 function cancel() {
-    filledFields.data = {};
+    filledFields.data = JSON.parse(JSON.stringify(props.fields));
 }
-const hasInput = computed(() => JSON.stringify(filledFields.data) != '{}')
+const hasInput = computed(() => JSON.stringify(filledFields.data) != '{}' && Object.keys(filledFields.data).some((k) => (filledFields.data[k]?.length || typeof filledFields.data[k] == 'boolean') && filledFields.data[k] !== props.fields[k]))
 
 const isSelectEntities = (key: any): boolean => key.endsWith('_ids') && isEntity(key.slice(0, -4))
 const getEntitiesKey = (key: any): EntityType => key.slice(0, -4) as EntityType
 function setValues(key: any, values: string[]) {
-    console.log(filledFields, values)
     filledFields.data[key] = values
 }
 
@@ -30,10 +29,8 @@ function setValue(key: any, value: string) {
 }
 
 function inputType(value: any): string {
-    let valueType = typeof value;
-    if (valueType == 'string') return 'text'
-    if (valueType == 'boolean') return 'checkbox'
-    if (valueType == 'number') return 'number'
+    if (typeof value == 'boolean') return 'checkbox'
+    if (typeof value == 'number') return 'number'
     return 'text'
 }
 </script>

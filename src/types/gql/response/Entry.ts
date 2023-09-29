@@ -4,6 +4,7 @@ export interface Entry {
     date_updated: Date
     date_deleted?: Date
     entity_type: string
+    favorite: boolean
 }
 
 export interface NamedEntry extends Entry {

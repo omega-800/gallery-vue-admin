@@ -21,6 +21,13 @@ export const useTagStore = defineStore("tags", {
             const tag = this.tags.find(f => f.id == id)
             if (tag) tag[key as keyof typeof tag] = value;
         },
+        updateProperties(id: string, data: any) {
+            //this.$patch((state) => {})
+            const tag = this.tags.find(t => t.id == id)
+            if (tag) {
+                Object.assign(tag, data);
+            }
+        },
         set(tags: Tag[]) {
             this.tags = tags;
         },
@@ -43,6 +50,15 @@ export const useTagStore = defineStore("tags", {
         },
         available(state) {
             return state.tags.filter(tag => tag.date_deleted == undefined)
+        },
+        fields(state) {
+            return (id?: string) => {
+                const tag = state.tags.find(tag => tag.id === id);
+                return {
+                    name: tag?.name || '',
+                    description: tag?.description || ''
+                }
+            }
         }
     },
 });

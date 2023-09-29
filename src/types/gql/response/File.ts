@@ -1,4 +1,4 @@
-import type { NamedEntry } from "./Entry"
+import type { Entry, NamedEntry } from "./Entry"
 
 export interface FileData extends NamedEntry {
     /*url: string
@@ -12,7 +12,6 @@ export interface FileData extends NamedEntry {
     width_prev: number
     height_prev: number
     edited: boolean
-    favorite: boolean
     __typename: string
     tag_ids: string[]
     /* galleries: Gallery[];
@@ -29,3 +28,8 @@ export interface Video extends FileData {
     fps_prev: number
 }
 
+export interface Gallery extends Entry {
+    name: string
+    file_ids: string[]
+    //shop_item_ids: string[]
+}

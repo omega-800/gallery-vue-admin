@@ -1,3 +1,9 @@
+@mixin outline-def {
+    outline: $bd-dash;
+    outline-offset: -5px;
+    padding: $el-size;
+}
+
 $c-p-dark: #157A6E;
 $c-p-mid: #499F68;
 $c-p-light: #77B28C;
@@ -10,6 +16,7 @@ $el-size: 1em;
 $el-wrap: $el-size * 1.5;
 $el-dbl: $el-size * 2;
 $el-tpl: $el-size * 3;
+$el-ten: $el-size * 10;
 $el-rad: calc($el-size / 2);
 $el-pad: calc($el-rad / 2);
 $thin: 0.15em;

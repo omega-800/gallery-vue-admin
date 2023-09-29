@@ -1,3 +1,5 @@
+import type { EntityType } from "../entities";
+
 export const entityQueryFields = `
 id
 date_added
@@ -23,8 +25,6 @@ export async function makeGQLRequest(queryStr: string): Promise<{ data: any }> |
         "headers": headers,
         "body": query
     };
-
-    console.log(query)
 
     const response = await fetch(endpoint, options);
     const data = await response.json();

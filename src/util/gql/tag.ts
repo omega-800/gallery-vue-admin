@@ -1,5 +1,6 @@
 import type { Tag } from "@/types/gql/response/Tag";
-import { entityQueryFields, fillDate, makeGQLRequest, mapIdArr } from "./request";
+import { entityQueryFields } from "./request";
+import { addEntity, getEntities } from "./entity";
 
 export const tagQueryFields = `
 ${entityQueryFields}
@@ -10,11 +11,8 @@ files {
 }
 `
 export async function getTags(): Promise<Tag[]> {
-    const query = ` {
-            tags {${tagQueryFields}}
-        }`
-
-    const response = await makeGQLRequest(query)
-    return response.data.tags.map((tag: any) => mapTag(tag))
+    return getEntities('tag', tagQueryFields)
 }
-export const mapTag = (tag: any) => ({ ...fillDate(mapIdArr(tag, ['files'])), entity_type: 'tag' })
+export async function addTag(data: any): Promise<Tag> {
+    return addEntity('tag', data, tagQueryFields)
+}

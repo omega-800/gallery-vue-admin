@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import FileEditComp from '@/components/file/FileEditComp.vue'
 import FileUpload from '@/components/file/FileUpload.vue'
 import { useFileStore } from '@/stores/files'
 import type { FileData } from '@/types/gql/response/File'
 import { ref } from 'vue'
+import { getEntityInfo } from '@/util/entities'
+import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
 </script>
 
 <script lang="ts">
@@ -29,7 +30,8 @@ function filesToShow(): FileData[] {
         </div>
     </div>
     <TransitionGroup name="list" tag="div" class="file-list fl-col-s">
-        <FileEditComp v-for="file of filesToShow()" :key="file.id" :file="file" />
+        <EditCompWrapper v-for="file of filesToShow()" :key="file.id" :entity-type="getEntityInfo('file')"
+            :entity-id="file.id" />
     </TransitionGroup>
 </template>
 

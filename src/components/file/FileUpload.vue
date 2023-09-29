@@ -75,7 +75,7 @@ function upload() {
                             <span v-if="item.state.action">{{ item.state.action }}</span>
                             <span v-if="item.state.status == UploadStatus.progress">...</span>
                         </p>
-                        <div v-if="item.state.percent" class="percent-wrapper">
+                        <div v-if="item.state.percent" class="percent-wrapper cover">
                             <div class="percent" :style="{ width: item.state.percent + '%' }"></div>
                         </div>
                     </div>
@@ -115,11 +115,6 @@ function upload() {
         }
 
         & .percent-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
 
             & .percent {
                 background-color: $c-dark;
