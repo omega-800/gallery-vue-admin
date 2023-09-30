@@ -10,12 +10,13 @@ const { gallery } = defineProps<{
 }>()
 
 const fileStore = useFileStore()
+const files = fileStore.byIds(gallery.file_ids)
 </script>
 
 <template>
     <CompWrapper :entity="gallery" :class="['fl-col-c']">
         <p class="name f-l">{{ gallery.name }}</p>
-        <FileComp v-for="file_id of gallery.file_ids" :key="file_id" :file="fileStore.byId(file_id)" />
+        <FileComp v-for="file of files" :key="file.id" :file="file" />
     </CompWrapper>
 </template>
 

@@ -17,56 +17,59 @@ const { entityType, action, entityId } = defineProps<{
 }>()
 
 const isEdit = !!entityId && action == 'edit';
-let isLoading = ref(false);
+const isLoading = ref(false);
 const store = entityType.store();
+const err: { msg: string } = reactive({ msg: '' })
 
+let initialFields = JSON.parse(JSON.stringify(store.fields(entityId)))
 let fields = reactive(JSON.parse(JSON.stringify(store.fields(entityId))))
-let filledFields = JSON.parse(JSON.stringify(fields))
-let hasInput = ref(false)
 
-const handleChange = (data: any) => {
-    filledFields = data;
-    hasInput.value = JSON.stringify(filledFields) != '{}' && Object.keys(filledFields).some((k) => (filledFields[k]?.length || typeof filledFields[k] == 'boolean') && filledFields[k] !== fields[k]);
-}
-const handleCancel = () => filledFields = JSON.parse(JSON.stringify(fields))
-const handleSubmit = () => isEdit ? submitEdited(filledFields) : submitNew(filledFields)
+let hasInput = computed(() => JSON.stringify(fields) != '{}' && Object.keys(fields).some((k) => (fields[k]?.length || typeof fields[k] == 'boolean') && fields[k] !== initialFields[k]))
 
-async function submitNew(data: any) {
+//const handleChange = (data: any) => ()
+
+const reset = () => Object.assign(fields, JSON.parse(JSON.stringify(initialFields)))
+const handleSubmit = () => isEdit ? submitEdited() : submitNew()
+
+async function submitNew() {
     isLoading.value = true;
     try {
         // no check needed (image / file) because those are created via upload
-        let newData = await addEntity(entityType.name, data);
+        let newData = await addEntity(entityType.name, fields);
         store.add(newData)
-        fields = store.fields()
+        reset();
         emit('success')
-    } catch (err) {
-        alert(err)
+    } catch (err: any) {
         console.error(err)
+        alert(err)
+        err.msg = JSON.stringify(err)
     }
     isLoading.value = false;
 }
 
-async function submitEdited(data: any) {
+async function submitEdited() {
     isLoading.value = true;
     try {
         const entity = store.byId(entityId);
-        let newData = await alterEntity(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, { ...data, id: entity.id });
+        let newData = await alterEntity(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, { ...fields, id: entity.id });
         store.updateProperties(entityId, newData)
         emit('success')
-    } catch (err) {
-        alert(err)
+    } catch (err: any) {
         console.error(err)
+        alert(err)
+        err.msg = JSON.stringify(err)
     }
     isLoading.value = false;
 }
 </script>
 
 <template>
+    <pre v-if="err.msg != ''">ERROR: {{ err.msg }}</pre>
     <LoadingComp v-if="isLoading" />
     <FileUpload v-if="entityType.name as string == 'file' && !isEdit" />
     <FormWrapper v-else :name="(isEdit ? 'Edit ' : 'Create new ') + entityType.display_name" @submitted="handleSubmit"
-        @cancelled="handleCancel" :has-input="hasInput">
-        <EntityFormFields :fields="fields" @altered="handleChange" />
+        @cancelled="reset" :has-input="hasInput">
+        <EntityFormFields :fields="fields" />
     </FormWrapper>
 </template>
 

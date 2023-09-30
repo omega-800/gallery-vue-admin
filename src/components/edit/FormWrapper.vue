@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { toRefs } from 'vue';
 
 const props = defineProps<{
     name?: string,
     description?: string,
     hasInput?: boolean
 }>()
+const { hasInput } = toRefs(props)
 </script>
 
 <template>
