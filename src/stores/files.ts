@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { FileData } from "@/types/gql/response/File";
-import { isImage } from "@/util/util";
+import { deepCopy, isImage } from "@/util/util";
+import type { FormField, FormFields } from "@/types/Form";
 
 export type FilesState = {
     files: FileData[];
@@ -40,7 +41,7 @@ export const useFileStore = defineStore("files", {
             return (id: string) => state.files.find(file => file.id === id);
         },
         byIds(state) {
-            return (ids: string[]) => state.files.filter(file => ids.includes(file.id));
+            return (ids: string[]) => ids ? state.files.filter(file => ids.includes(file.id)) : []
         },
         deleted(state) {
             return state.files.filter(file => file.date_deleted != undefined)
@@ -49,18 +50,38 @@ export const useFileStore = defineStore("files", {
             return state.files.filter(file => file.date_deleted == undefined)
         },
         fields(state) {
-            return (id: string) => {
+            return (id?: string): FormFields => {
                 const file = state.files.find(file => file.id === id);
-                if (!file) return;
-                const fields: any = {
-                    edited: file.edited,
-                    name: file.name,
+                return {
+                    edited: {
+                        value: !!file?.edited,
+                        name: 'Was edited',
+                        nullable: true
+                    },
+                    name: {
+                        value: file?.name || '',
+                        name: 'Name',
+                        nullable: true
+                    },
+                    description: {
+                        value: file?.description || '',
+                        name: 'Description',
+                        nullable: true
+                    },
+                    alt: {
+                        value: file?.alt || '',
+                        name: 'Alt text',
+                        nullable: true
+                    },
+                    tag_ids: {
+                        value: file?.tag_ids ? deepCopy(file.tag_ids) : [],
+                        name: 'Tags',
+                        nullable: true
+                    },
+
                     /* galleries: Gallery[];
                     shop_items?: ShopItem[] | null */
                 }
-                if (isImage(file)) fields.alt = file.alt
-                fields.tag_ids = JSON.parse(JSON.stringify(file.tag_ids))
-                return fields;
             }
         }
     },

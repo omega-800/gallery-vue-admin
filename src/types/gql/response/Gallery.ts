@@ -1,7 +1,6 @@
-import type { Entry } from "./Entry"
+import type { DescEntry } from "./Entry"
 
-export interface Gallery extends Entry {
-    name: string
+export interface Gallery extends DescEntry {
     file_ids: string[]
     //shop_item_ids: string[]
 }

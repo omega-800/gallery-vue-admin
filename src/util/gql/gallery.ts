@@ -1,10 +1,8 @@
 import type { Gallery } from "@/types/gql/response/Gallery"
-import { getEntities } from "./entity"
-import { entityQueryFields } from "./request"
+import { getEntities, descEntityQueryFields } from "./entity"
 
 export const galleryQueryFields = `
-${entityQueryFields}
-name
+${descEntityQueryFields}
 files {
     id
 }

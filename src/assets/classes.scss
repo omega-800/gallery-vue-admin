@@ -3,6 +3,41 @@
     position: relative;
 }
 
+.preview {
+    width: $el-tpl * 2;
+    padding: $el-rad !important;
+
+    & .main-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &.isfavorite {
+        outline-color: $c-s-light;
+    }
+
+    & .file {
+        width: 100%;
+    }
+}
+
+.message {
+    border-radius: $el-pad;
+
+    &.green {
+        background-color: $c-p-light;
+    }
+
+    &.orange {
+        background-color: $c-s-light;
+    }
+
+    &.red {
+        background-color: $c-s-dark;
+    }
+}
+
 .box {
     background-color: $c-p-dark;
     @include outline-def;

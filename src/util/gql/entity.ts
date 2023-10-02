@@ -1,6 +1,21 @@
 import type { EntityType } from "../entities"
 import { fillDate, makeGQLRequest, mapIdArr, pluralName, removeNullVals, returnKeysAndDate, stringifyForGQL } from "./request"
 
+export const entityQueryFields = `
+id
+date_added
+date_updated
+date_deleted
+`
+export const descEntityQueryFields = `${entityQueryFields}
+name
+description
+`
+export const uniqueEntityQueryFields = `${descEntityQueryFields}
+color
+`
+
+
 export async function deleteOrRestoreEntity(type: string, id: string, doDelete: boolean): Promise<{ deleted?: Date, updated: Date }> {
     const queryName = (doDelete ? 'delete' : 'restore') + '_' + type
     const query = `mutation {
@@ -61,4 +76,4 @@ export async function setFavorite(type: 'image' | 'video' | EntityType, id: stri
     return new Date(response.data[`alter_${type}`].date_updated)
 }
 
-export const mapEntity = (data: any, type: 'image' | 'video' | EntityType) => ({ ...fillDate(mapIdArr(data, ['tags', 'files'])), entity_type: ['image', 'video'].includes(type) ? 'file' : type })
+export const mapEntity = (data: any, type: 'image' | 'video' | EntityType) => ({ ...fillDate(mapIdArr(data, ['tags', 'files', 'galleries'])), entity_type: ['image', 'video'].includes(type) ? 'file' : type })

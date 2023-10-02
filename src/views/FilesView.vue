@@ -5,7 +5,7 @@ import type { FileData } from '@/types/gql/response/File'
 import { ref } from 'vue'
 import { getEntityInfo } from '@/util/entities'
 import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
-import SwitchComp from '@/components/edit/SwitchComp.vue';
+import SwitchComp from '@/components/input/SwitchComp.vue';
 </script>
 
 <script lang="ts">

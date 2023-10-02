@@ -1,11 +1,9 @@
 import type { FileData, Image, Video } from "@/types/gql/response/File";
 import type { CreateFileInput, CreateVideoInput } from "@/types/gql/input/File";
-import { entityQueryFields } from "./request";
-import { addEntity, getEntities } from "./entity";
+import { addEntity, getEntities, descEntityQueryFields } from "./entity";
 
 export const fileQueryFields = `
-${entityQueryFields}
-name
+${descEntityQueryFields}
 file_type
 file_name
 file_name_orig
@@ -16,19 +14,19 @@ width_prev
 height_prev
 edited
 favorite
+alt
 tags {
     id
 }
 __typename`
-export const imageQueryFields = `${fileQueryFields}
-alt`
+export const imageQueryFields = `${fileQueryFields}`
 export const videoQueryFields = `${fileQueryFields}
 duration
 fps
 fps_prev`
 export async function addImageToDB(image: any): Promise<FileData> {
     const onlyGqlAttrs: CreateFileInput = onlyGqlAttrsObj(image)
-    return addEntity('image', onlyGqlAttrs, imageQueryFields)
+    return addEntity('image', onlyGqlAttrs)
 }
 
 export async function addVideoToDB(video: any): Promise<FileData> {
@@ -38,7 +36,7 @@ export async function addVideoToDB(video: any): Promise<FileData> {
         fps: video.fps,
         fps_prev: video.fps_prev,
     }
-    return addEntity('video', onlyGqlAttrs, videoQueryFields)
+    return addEntity('video', onlyGqlAttrs)
 }
 
 export async function getFiles(): Promise<FileData[]> {

@@ -1,5 +1,5 @@
-import type { DescEntry } from "./Entry";
+import type { UniqueNamedEntry } from "./Entry";
 
-export interface Tag extends DescEntry {
+export interface Tag extends UniqueNamedEntry {
     file_ids: string[]
 }

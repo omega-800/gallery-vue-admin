@@ -4,6 +4,7 @@ import ToggleIconHome from '@/components/icons/toggle/ToggleIconHome.vue'
 import ToggleIconFolder from '@/components/icons/toggle/ToggleIconFolder.vue'
 import ToggleIconCategories from '@/components/icons/toggle/ToggleIconCategories.vue'
 import ToggleIconTag from '@/components/icons/toggle/ToggleIconTag.vue'
+import ToggleIconShop from '@/components/icons/toggle/ToggleIconShop.vue'
 </script>
 
 <script lang="ts">
@@ -31,6 +32,9 @@ import ToggleIconTag from '@/components/icons/toggle/ToggleIconTag.vue'
       <RouterLink to="/galleries" v-slot="{ isActive, isExactActive }">
         <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
           text="Galleries" />
+      </RouterLink>
+      <RouterLink to="/shop_items" v-slot="{ isActive, isExactActive }">
+        <ToggleIconShop :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
       </RouterLink>
     </nav>
   </header>

@@ -19,11 +19,10 @@ export interface CreateVideoInput extends CreateFileInput {
 
 export interface AlterFileInput extends Identifiable {
     name?: string,
+    description?: string
     edited?: boolean,
-    tag_ids?: string[]
+    tag_ids?: string[],
+    alt?: string,
     /* galleries: Gallery[];
     shop_items?: ShopItem[] | null */
-}
-export interface AlterImageInput extends AlterFileInput {
-    alt?: string,
 }

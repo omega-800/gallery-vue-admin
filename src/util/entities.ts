@@ -3,8 +3,10 @@ import { useTagStore } from "@/stores/tags"
 import { useGalleryStore } from "@/stores/galleries"
 import { pluralName } from "./gql/request";
 import type { Entry } from "@/types/gql/response/Entry";
+import { entityQueryFields } from "./gql/entity";
+import { useShopItemStore } from "@/stores/shop_items";
 
-export type EntityType = 'tag' | 'file' | 'gallery';
+export type EntityType = 'tag' | 'file' | 'gallery' | 'shop_item';
 
 export interface EntityInfo {
     name: EntityType,
@@ -16,6 +18,7 @@ export const entities: EntityInfo[] = [
     { name: 'file', display_name: 'File', store: useFileStore },
     { name: 'tag', display_name: 'Tag', store: useTagStore },
     { name: 'gallery', display_name: 'Gallery', store: useGalleryStore },
+    { name: 'shop_item', display_name: 'Shop Item', store: useShopItemStore },
 ]
 
 export interface EntityUtil {
@@ -24,6 +27,7 @@ export interface EntityUtil {
     deleted: (ent: EntityInfo, deleted: boolean) => any
     favorites: (ent: EntityInfo) => any
     all: (ent: EntityInfo) => any
+    queryFields: (ent: EntityInfo) => string
 }
 
 export const entityUtil: EntityUtil = {
@@ -31,7 +35,8 @@ export const entityUtil: EntityUtil = {
     byIds: (ent: EntityInfo, ids: string[]) => ent.store()[pluralName(ent.name)].find((e: Entry) => ids.includes(e.id)),
     deleted: (ent: EntityInfo, deleted: boolean) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.date_deleted == deleted),
     favorites: (ent: EntityInfo) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.favorite),
-    all: (ent: EntityInfo) => ent.store()[pluralName(ent.name)]
+    all: (ent: EntityInfo) => ent.store()[pluralName(ent.name)],
+    queryFields: (ent: EntityInfo) => entityQueryFields + Object.keys(ent.store().fields).join(' ')
 }
 
 export const getEntityInfo = (name: EntityType): EntityInfo => entities.find(e => e.name == name)!

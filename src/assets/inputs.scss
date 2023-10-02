@@ -104,7 +104,9 @@ $c-hov: $c-p-mid;
 
 input[type=text],
 input[type=number],
-input[type=checkbox] {
+input[type=checkbox],
+input[type=date],
+input[type=color] {
     background-color: $c-def;
     border: $bd-def;
     padding: 0 $el-pad;

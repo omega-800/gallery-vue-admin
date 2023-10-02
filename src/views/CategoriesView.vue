@@ -3,12 +3,12 @@ import { useTagStore } from '@/stores/tags'
 import type { Tag } from '@/types/gql/response/Tag'
 import { getEntityInfo } from '@/util/entities'
 import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
-import SwitchComp from '@/components/edit/SwitchComp.vue';
+import SwitchComp from '@/components/input/SwitchComp.vue';
 import LoadingComp from '@/components/helpers/LoadingComp.vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { addTag } from '@/util/gql/tag';
-import CompActionForm from '@/components/edit/CompActionForm.vue';
+import CompActionForm from '@/components/form/CompActionForm.vue';
 </script>
 
 <script lang="ts">

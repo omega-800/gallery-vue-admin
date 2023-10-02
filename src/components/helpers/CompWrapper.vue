@@ -3,7 +3,6 @@
 const { entity } = defineProps<{
     entity: any,
 }>()
-
 </script>
 
 <template>
@@ -17,5 +16,9 @@ const { entity } = defineProps<{
 .isdeleted {
     outline-color: $c-dark;
     background-color: $c-light;
+}
+
+.isfavorite {
+    outline-color: $c-s-light;
 }
 </style>

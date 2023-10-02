@@ -47,6 +47,14 @@ const router = createRouter({
       props: {
         entityType: getEntityInfo('gallery')
       }
+    },
+    {
+      path: '/shop_items',
+      name: 'shop_items',
+      component: EntityListView,
+      props: {
+        entityType: getEntityInfo('shop_item')
+      }
     }
   ]
 })

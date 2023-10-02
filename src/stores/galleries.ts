@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import type { Gallery } from "@/types/gql/response/Gallery";
+import type { FormFields } from "@/types/Form";
+import { deepCopy } from "@/util/util";
 
 export type GalleriesState = {
     galleries: Gallery[];
@@ -39,7 +41,7 @@ export const useGalleryStore = defineStore("galleries", {
             return (id: string) => state.galleries.find(gallery => gallery.id === id);
         },
         byIds(state) {
-            return (ids: string[]) => state.galleries.filter(gallery => ids.includes(gallery.id));
+            return (ids: string[]) => ids ? state.galleries.filter(gallery => ids.includes(gallery.id)) : []
         },
         deleted(state) {
             return state.galleries.filter(gallery => gallery.date_deleted != undefined)
@@ -48,11 +50,24 @@ export const useGalleryStore = defineStore("galleries", {
             return state.galleries.filter(gallery => gallery.date_deleted == undefined)
         },
         fields(state) {
-            return (id?: string) => {
+            return (id?: string): FormFields => {
                 const gallery = state.galleries.find(gallery => gallery.id === id);
                 return {
-                    name: gallery?.name || '',
-                    file_ids: gallery ? JSON.parse(JSON.stringify(gallery.file_ids)) : []
+                    name: {
+                        value: gallery?.name || '',
+                        name: 'Name',
+                        nullable: false
+                    },
+                    description: {
+                        value: gallery?.description || '',
+                        name: 'Description',
+                        nullable: true
+                    },
+                    file_ids: {
+                        value: gallery ? deepCopy(gallery.file_ids) : [],
+                        name: 'Files',
+                        nullable: true
+                    }
                 }
             }
         }

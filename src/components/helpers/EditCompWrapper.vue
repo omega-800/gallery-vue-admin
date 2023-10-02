@@ -3,8 +3,8 @@ import PopupWrapper from '@/components/helpers/PopupWrapper.vue'
 import LoadingComp from '@/components/helpers/LoadingComp.vue'
 import { ref } from 'vue'
 import { deleteOrRestoreEntity, setFavorite } from '@/util/gql/entity'
-import EditBarWrapper from '@/components/edit/EditBarWrapper.vue';
-import CompActionForm from '@/components/edit/CompActionForm.vue';
+import EditBarWrapper from '@/components/helpers/EditBarWrapper.vue';
+import CompActionForm from '@/components/form/CompActionForm.vue';
 import { isImage, isVideo } from '@/util/util'
 import { type EntityInfo } from '@/util/entities'
 import ToggleIconPen from '@/components/icons/toggle/ToggleIconPen.vue'
@@ -60,8 +60,8 @@ function setEditMode(edit: boolean) {
         @mouseleave="showEdit = false">
         <LoadingComp v-if="isLoading" />
         <PopupWrapper :show="inEditMode" @close="setEditMode(false)" :name="'Edit ' + entity.entity_type">
-            <CompActionForm :action="'edit'" :entity-type="entityType" :entity-id="entity.id"
-                @success="setEditMode(false)" />
+            <CompActionForm :action="'edit'" :entity-type="entityType" :entity-id="entity.id" @success="setEditMode(false)"
+                @cancelled="setEditMode(false)" />
         </PopupWrapper>
         <EditBarWrapper :show="showEdit">
             <ToggleIconPen :active="inEditMode" :label="false" @click="inEditMode = !inEditMode" />

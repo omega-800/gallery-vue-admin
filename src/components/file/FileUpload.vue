@@ -123,7 +123,7 @@ function upload() {
             line-break: anywhere;
         }
 
-        &.error>* {
+        &.error {
             color: $c-s-dark;
             border-color: $c-s-dark;
 

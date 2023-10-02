@@ -1,11 +1,4 @@
-import type { EntityType } from "../entities";
-
-export const entityQueryFields = `
-id
-date_added
-date_updated
-date_deleted
-`
+import { entityQueryFields } from "./entity";
 
 export async function makeGQLRequest(queryStr: string): Promise<{ data: any }> | never {
 
@@ -57,17 +50,13 @@ export function mapIdArr(obj: any, propnames: string[]) {
     }
 }
 
-export function fillDate(file: any): any {
-    if (file.date_added) {
-        file.date_added = new Date(file.date_added)
-    }
-    if (file.date_deleted) {
-        file.date_deleted = new Date(file.date_deleted)
-    }
-    if (file.date_updated) {
-        file.date_updated = new Date(file.date_updated)
-    }
-    return file
+export function fillDate(entity: any): any {
+    if (entity.date_added) entity.date_added = new Date(entity.date_added)
+    if (entity.date_deleted) entity.date_deleted = new Date(entity.date_deleted)
+    if (entity.date_updated) entity.date_updated = new Date(entity.date_updated)
+    if (entity.available_from) entity.available_from = new Date(entity.available_from)
+    if (entity.available_to) entity.available_to = new Date(entity.available_to)
+    return entity
 }
 
 export function removeNullVals(data: any) {

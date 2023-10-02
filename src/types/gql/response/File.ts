@@ -1,6 +1,6 @@
-import type { Entry, NamedEntry } from "./Entry"
+import type { Entry, DescEntry } from "./Entry"
 
-export interface FileData extends NamedEntry {
+export interface FileData extends DescEntry {
     /*url: string
     preview_url: string*/
     file_type: string
@@ -14,12 +14,12 @@ export interface FileData extends NamedEntry {
     edited: boolean
     __typename: string
     tag_ids: string[]
-    /* galleries: Gallery[];
-    shop_items?: ShopItem[] | null */
+    alt?: string
+    /* galleries?: Gallery[];
+    shop_items?: ShopItem[]*/
 }
 
 export interface Image extends FileData {
-    alt?: string | null
 }
 
 export interface Video extends FileData {

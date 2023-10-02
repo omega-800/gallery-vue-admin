@@ -1,13 +1,20 @@
 export enum FieldType {
     string = 'string',
     number = 'number',
-    boolean = 'boolean'
+    boolean = 'boolean',
+    color = 'color',
+    entity = 'entity',
+    entities = 'entities'
 }
 
 export interface FormField {
     name: string,
-    type: FieldType,
     value: any,
-    default?: any,
     nullable?: boolean,
+    unique?: boolean,
+    dependsOn?: string
+}
+
+export interface FormFields {
+    [key: string]: FormField
 }

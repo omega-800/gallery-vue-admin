@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 
+const emit = defineEmits(['submitted', 'cancelled'])
 const props = defineProps<{
     name?: string,
     description?: string,
-    hasInput?: boolean
+    hasInput: boolean,
+    isCorrect: boolean
 }>()
 const { hasInput } = toRefs(props)
 </script>
@@ -19,8 +21,8 @@ const { hasInput } = toRefs(props)
             <slot></slot>
         </div>
         <div class="actions fl-e2e">
-            <button class="btn" :disabled="!hasInput" @click="$emit('submitted')">
-                {{ !hasInput ? 'Submit (input data first) ' : `Submit` }}
+            <button class="btn" :disabled="!hasInput || !isCorrect" @click="$emit('submitted')">Submit
+                {{ !hasInput ? '(input data first)' : !isCorrect ? '(input is not correct)' : '' }}
             </button>
             <button v-if="hasInput" class="btn" @click="$emit('cancelled')">X Cancel</button>
         </div>

@@ -4,6 +4,8 @@ import { useTagStore } from '@/stores/tags';
 import { getTags } from './gql/tag';
 import { getGalleries } from './gql/gallery';
 import { useGalleryStore } from '@/stores/galleries';
+import { useShopItemStore } from '@/stores/shop_items';
+import { getShopItems } from './gql/shop_item';
 
 export async function loadFiles() {
     const fileStore = useFileStore();
@@ -16,4 +18,7 @@ export async function loadFiles() {
     const galleryStore = useGalleryStore();
     const galleries = await getGalleries();
     galleryStore.set(galleries)
+    const shopItemStore = useShopItemStore();
+    const shop_items = await getShopItems();
+    shopItemStore.set(shop_items)
 }

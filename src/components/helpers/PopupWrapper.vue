@@ -16,8 +16,8 @@ const props = defineProps<{
                 <div class="name-container fl-col">
                     <p v-if="name" class="name f-l">{{ name }}</p>
                     <p v-if="description" class="description f-m">{{ description }}</p>
+                    <button class="close btn" @click="$emit('close')">X Close</button>
                 </div>
-                <button class="close btn" @click="$emit('close')">X Close</button>
                 <div class="popup-content">
                     <slot></slot>
                 </div>
@@ -43,6 +43,10 @@ const props = defineProps<{
         height: 80vh;
         width: 80vw;
 
+        & .name-container {
+            height: $el-dbl;
+        }
+
         & .close.btn {
             position: absolute;
             top: $el-size;
@@ -50,7 +54,9 @@ const props = defineProps<{
         }
 
         & .popup-content {
-            padding: 10%;
+            margin: $el-size 10%;
+            overflow-y: auto;
+            height: calc(100% - ($el-dbl * 2));
         }
     }
 }

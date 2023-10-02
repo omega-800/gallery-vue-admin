@@ -1,48 +1,52 @@
 <script setup lang="ts">
 import type { Gallery } from '@/types/gql/response/Gallery'
 import CompWrapper from '@/components/helpers/CompWrapper.vue';
-import FileComp from '@/components/file/FileComp.vue';
+import FileDisplay from '@/components/file/FileDisplay.vue'
 import { useFileStore } from '@/stores/files'
-import { ref } from 'vue'
+import { ref, computed, reactive, toRefs, watch } from 'vue'
 
-const { gallery } = defineProps<{
+const props = defineProps<{
     gallery: Gallery,
 }>()
 
+const { gallery } = toRefs(props)
 const fileStore = useFileStore()
-const files = fileStore.byIds(gallery.file_ids)
+
+const mapFiles = (ids: string[]) => fileStore.byIds(ids).map((file, i) => ({ file: file, selected: i == 0, index: i })).sort((a, b) => b.index - a.index)
+let items = reactive(mapFiles(gallery.value.file_ids))
+
+const selected = computed(() => items.find(i => i.selected)!)
+const deselected = computed(() => items.filter(i => !i.selected))
+
+const select = (index: number) => items.map(i => i.selected = i.index == index);
+
+watch(gallery, (newValue: any, oldValue: any) => {
+    items.length = 0;
+    Object.assign(items, mapFiles(newValue.file_ids))
+}, { deep: true })
+
 </script>
 
 <template>
-    <CompWrapper :entity="gallery" :class="['fl-col-c']">
-        <p class="name f-l">{{ gallery.name }}</p>
-        <FileComp v-for="file of files" :key="file.id" :file="file" />
+    <CompWrapper :entity="gallery" :class="['fl-col-c', 'box']">
+        <p class="main-name f-l">{{ gallery.name }}</p>
+        <p v-if="gallery.description" class="description f-m">{{ gallery.description }}</p>
+        <!--FileComp v-for="file of files" :key="file.id" :file="file" /-->
+        <FileDisplay v-if="selected?.file" :file="selected.file" />
+        <div v-if="deselected && deselected.length > 0" class="items fl-row">
+            <FileDisplay v-for="item of deselected" :file="item.file" :thumbnail="true" @click="select(item.index)" />
+        </div>
     </CompWrapper>
 </template>
 
 <style scoped lang="scss">
 .gallery-comp {
-    background-color: $c-p-light;
-    //transition: $tr-c-def;
+    & .items {
 
-    &.isdeleted {
-        @include outline-def;
-        outline-offset: -#{$thin};
-
-        &::after {
-            border-right: $el-size solid $c-dark;
-        }
-
-        &::before {
-            background-color: $c-light;
+        & .thumbnail {
+            cursor: pointer;
+            width: $el-tpl;
         }
     }
-
-
-    &.isfavorite {
-        background-color: $c-s-light;
-
-    }
-
 }
 </style>

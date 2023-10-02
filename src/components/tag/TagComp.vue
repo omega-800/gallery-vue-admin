@@ -8,6 +8,17 @@ const { tag } = defineProps<{
     selectable?: boolean
 }>()
 const showDesc = ref(false)
+const tagColor = tag.color || '$c-p-light'
+const textColor = oppositeColor(tag.color)
+
+function oppositeColor(color?: string): any {
+    if (!color) return '#000'
+    var m = color.substring(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g);
+    if (!m) return '#000'
+    var r = parseInt(m[0], 16), g = parseInt(m[1], 16), b = parseInt(m[2], 16);
+    if (!r) return '#000'
+    return (((r * 299) + (g * 587) + (b * 114)) / 1000) < 127 ? '#fff' : '#000';
+}
 </script>
 
 <template>
@@ -19,7 +30,8 @@ const showDesc = ref(false)
 
 <style scoped lang="scss">
 .tag-comp {
-    background-color: $c-p-light;
+    background-color: v-bind(tagColor);
+    color: v-bind(textColor);
     border-radius: 0 $el-pad $el-pad 0;
     height: $el-dbl;
     padding: 0 $el-pad;
@@ -40,7 +52,9 @@ const showDesc = ref(false)
     }
 
     @mixin orangetag {
-        background-color: $c-s-light;
+        @include outline-def;
+        outline-offset: -#{$thin};
+        outline-color: $c-s-light;
 
         &::after {
             border-right: $el-size solid $c-s-light;
@@ -86,7 +100,7 @@ const showDesc = ref(false)
         right: 100%;
         top: 0;
         border: $el-size solid transparent;
-        border-right: $el-size solid $c-p-light;
+        border-right: $el-size solid v-bind(tagColor);
     }
 
     &::before {
@@ -98,7 +112,7 @@ const showDesc = ref(false)
         right: 100%;
         top: calc(50% - ($thin * 1.5));
         border-radius: 50%;
-        background-color: $c-p-dark;
+        background-color: v-bind(textColor);
         z-index: $z-l;
     }
 }

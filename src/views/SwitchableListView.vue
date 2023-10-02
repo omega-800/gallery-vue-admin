@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SearchComp from '@/components/filter/SearchComp.vue';
+import SearchComp from '@/components/input/SearchComp.vue';
 import { getEntityInfo, isEntity, type EntityInfo } from '@/util/entities';
 import EntityListView from './EntityListView.vue';
 import { reactive, ref } from 'vue';

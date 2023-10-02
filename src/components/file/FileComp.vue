@@ -2,10 +2,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { FileData } from '@/types/gql/response/File';
-import { previewPath, previewPathVid } from '@/util/file/download';
-import { isImage, isVideo, humanFileSize, humanTime } from '@/util/util';
+import FileDisplay from '@/components/file/FileDisplay.vue'
+import { isImage, isVideo, humanFileSize, humanTime, fullFileName, formatDate } from '@/util/util';
 import { useTagStore } from '@/stores/tags';
-import TagComp from '@/components/categories/TagComp.vue'
+import TagComp from '@/components/tag/TagComp.vue'
 import CompWrapper from '@/components/helpers/CompWrapper.vue';
 
 const props = defineProps<{
@@ -18,18 +18,15 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 <template>
     <CompWrapper :entity="file" :class="['box']">
         <div class="name-container fl-col">
-            <p class="main-name f-l">{{ file.name || file.file_name_orig }}</p>
-            <p v-if="file.name">{{ file.file_name_orig }}</p>
-            <p>{{ file.__typename }} {{ file.id }}</p>
+            <p class="main-name f-l">{{ file.name || fullFileName(file) }}</p>
+            <p v-if="file.name">{{ fullFileName(file) }}</p>
+            <p v-if="file.description" class="description f-m">{{ file.description }}</p>
         </div>
         <div class="tags fl-row">
             <TagComp v-for="tag in tags" :key="tag.id" :tag="tag" />
         </div>
         <div class="content">
-            <img v-if="isImage(file)" :src="previewPath(file.file_name)" :alt="file.alt || ''" class="file">
-            <video v-if="isVideo(file)" class="file" constrols>
-                <source :src="previewPathVid(file.file_name)" type="video/webm">
-            </video>
+            <FileDisplay :file="file" />
             <Transition name="fade">
                 <table class="info-container">
                     <tr>
@@ -38,15 +35,15 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
                     </tr>
                     <tr>
                         <td>Added</td>
-                        <td>{{ file.date_added.toDateString() }}</td>
+                        <td>{{ formatDate(file.date_added) }}</td>
                     </tr>
                     <tr v-if="file.date_deleted">
                         <td>Deleted</td>
-                        <td>{{ file.date_deleted.toDateString() }}</td>
+                        <td>{{ formatDate(file.date_deleted) }}</td>
                     </tr>
                     <tr v-if="file.date_added.getTime() !== file.date_updated.getTime()">
                         <td>Updated</td>
-                        <td>{{ file.date_updated.toDateString() }}</td>
+                        <td>{{ formatDate(file.date_updated) }}</td>
                     </tr>
                     <tr>
                         <td>Filetype</td>
@@ -97,10 +94,6 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 <style scoped lang="scss">
 .file-comp {
     width: 100%;
-
-    &.isfavorite {
-        outline-color: $c-s-light;
-    }
 
     & .name-container {
         &>* {
