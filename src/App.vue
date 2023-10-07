@@ -29,6 +29,10 @@ import ToggleIconShop from '@/components/icons/toggle/ToggleIconShop.vue'
         <ToggleIconTag :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
           text="Tags" />
       </RouterLink>
+      <RouterLink to="/categories" v-slot="{ isActive, isExactActive }">
+        <ToggleIconTag :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
+          text="Categories" />
+      </RouterLink>
       <RouterLink to="/galleries" v-slot="{ isActive, isExactActive }">
         <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
           text="Galleries" />

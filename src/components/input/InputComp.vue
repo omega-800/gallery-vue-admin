@@ -3,6 +3,7 @@ import type { FormField } from '@/types/Form';
 import { toRefs } from 'vue'
 //import { FormField } from '@/types/Form'
 
+const emit = defineEmits(['valuechanged'])
 const props = defineProps<{
     name: string,
     field: FormField
@@ -16,12 +17,18 @@ const type = (typeof field.value.value == 'boolean') ? 'checkbox' :
             (name.value == 'color') ? 'color' :
                 'text'
 
+let val = type == 'date'
+    ? `${field.value.value.getFullYear()}-${field.value.value.toLocaleString("default", { month: "2-digit" })}-${field.value.value.toLocaleString("default", { day: "2-digit" })}`
+    : field.value.value
+
+const emitVal = () => emit('valuechanged', type == 'date' ? new Date(val) : val)
 </script>
 
 <template>
     <div class="input-group">
         <label :for="field.name" class="input-label">{{ field.name }}</label>
-        <input :type="type" :name="field.name" :placeholder="field.name" v-model="field.value" :required="!field.nullable">
+        <input :type="type" :name="field.name" :placeholder="field.name" v-model="val" :required="!field.nullable"
+            @input="emitVal()">
     </div>
 </template>
 

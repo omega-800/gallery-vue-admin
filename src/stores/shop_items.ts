@@ -87,10 +87,11 @@ export const useShopItemStore = defineStore("shop_items", {
                         nullable: true,
                         value: shop_item?.available_to || new Date()
                     },
-                    /*category_id?: {
-                        name:'',
-                        nullable:false,
-                        value: shop_item?.string*/
+                    category_id: {
+                        name: 'Category',
+                        nullable: true,
+                        value: shop_item?.category_id || null
+                    },
                     file_ids: {
                         name: 'Files',
                         nullable: false,

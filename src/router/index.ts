@@ -36,9 +36,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/categories-old',
+      name: 'categories-old',
+      component: () => import('../views/CategoriesView.vue')
+    },
+    {
       path: '/categories',
       name: 'categories',
-      component: () => import('../views/CategoriesView.vue')
+      component: EntityListView,
+      props: {
+        entityType: getEntityInfo('category')
+      }
     },
     {
       path: '/galleries',

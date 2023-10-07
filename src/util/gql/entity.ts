@@ -75,4 +75,4 @@ export async function setFavorite(type: 'image' | 'video' | EntityType, id: stri
     return new Date(response.data[`alter_${type}`].date_updated)
 }
 
-export const mapEntity = (data: any, type: 'image' | 'video' | EntityType) => ({ ...fillDate(mapIdArr(data, ['tags', 'files', 'galleries'])), entity_type: ['image', 'video'].includes(type) ? 'file' : type })
+export const mapEntity = (data: any, type: 'image' | 'video' | EntityType) => ({ ...fillDate(mapIdArr(data, ['tags', 'files', 'galleries', 'category'])), entity_type: ['image', 'video'].includes(type) ? 'file' : type })

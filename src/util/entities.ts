@@ -5,8 +5,9 @@ import { pluralName } from "./gql/request";
 import type { Entry } from "@/types/gql/response/Entry";
 import { entityQueryFields } from "./gql/entity";
 import { useShopItemStore } from "@/stores/shop_items";
+import { useCategoryStore } from "@/stores/categories";
 
-export type EntityType = 'tag' | 'file' | 'gallery' | 'shop_item';
+export type EntityType = 'tag' | 'file' | 'gallery' | 'shop_item' | 'category';
 
 export interface EntityInfo {
     name: EntityType,
@@ -19,6 +20,7 @@ export const entities: EntityInfo[] = [
     { name: 'tag', display_name: 'Tag', store: useTagStore },
     { name: 'gallery', display_name: 'Gallery', store: useGalleryStore },
     { name: 'shop_item', display_name: 'Shop Item', store: useShopItemStore },
+    { name: 'category', display_name: 'Category', store: useCategoryStore },
 ]
 
 export interface EntityUtil {

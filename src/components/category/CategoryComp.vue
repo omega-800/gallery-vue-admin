@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import type { Tag } from '@/types/gql/response/Tag'
+import type { Category } from '@/types/gql/response/Category'
 import CompWrapper from '@/components/helpers/CompWrapper.vue';
-import { ref } from 'vue'
+import { ref, toRefs } from 'vue'
 import { oppositeColor } from '@/util/util';
 
-const { tag } = defineProps<{
-    tag: Tag,
+const props = defineProps<{
+    category: Category,
     selectable?: boolean
 }>()
+const { category } = toRefs(props)
 const showDesc = ref(false)
-const tagColor = ref(tag.color || '$c-p-light')
-const textColor = ref(oppositeColor(tag.color))
+const categoryColor = ref(category.value.color || '$c-p-light')
+const textColor = ref(oppositeColor(category.value.color))
 </script>
 
 <template>
-    <CompWrapper :entity="tag" :class="[{ selectable: !!selectable }, 'fl-col-c']">
-        <p class="name f-s">{{ tag.name }}</p>
-        <p v-if="tag.description && showDesc" class="description f-s">{{ tag.description }}</p>
+    <CompWrapper :entity="category" :class="[{ selectable: !!selectable }, 'fl-col-c']">
+        <p class="name f-s">{{ category.name }}</p>
+        <p v-if="category.description && showDesc" class="description f-s">{{ category.description }}</p>
     </CompWrapper>
 </template>
 
 <style scoped lang="scss">
-.tag-comp {
-    background-color: v-bind(tagColor);
+.category-comp {
+    background-color: v-bind(categoryColor);
     color: v-bind(textColor);
     border-radius: 0 $el-pad $el-pad 0;
     height: $el-dbl;

@@ -7,7 +7,8 @@ import { computed, reactive, ref } from 'vue'
 import { addEntity, alterEntity } from '@/util/gql/entity';
 import { deepCopy, isImage, isValid, isNotEmpty, isVideo } from '@/util/util';
 import type { FormField, FormFields } from '@/types/Form';
-import SelectEntityList from '@/components/input/SelectEntityList.vue';
+import SelectEntitiesComp from '@/components/input/SelectEntitiesComp.vue';
+import SelectEntityComp from '@/components/input/SelectEntityComp.vue';
 import InputComp from '../input/InputComp.vue';
 import ValidationTooltip from '../input/ValidationTooltip.vue';
 
@@ -90,14 +91,16 @@ function handleError(err: any) {
             <template v-if="isSelectEntities(key)">
                 <ValidationTooltip v-if="!!field.dependsOn" :valid="depSatisfied(field)" condition="dep"
                     :dependant="field.dependsOn" />
-                <SelectEntityList :entity-type="getEntityInfo(getEntitiesKey(key))" :selected_ids="field.value" />
+                <SelectEntitiesComp :entity-type="getEntityInfo(getEntitiesKey(key))" :selected_ids="field.value" />
             </template>
             <template v-else-if="isSelectEntity(key)">
+                <SelectEntityComp :entity-type="getEntityInfo(getEntityKey(key))" :selected_id="field.value"
+                    @deselected="field.value = undefined" @selected="(id) => field.value = id" />
             </template>
             <template v-else>
                 <ValidationTooltip v-if="!field.nullable" :valid="isNotEmpty(field.value)" condition="req" />
                 <ValidationTooltip v-if="field.unique" :valid="!isDuplicate(fields[key].value)" condition="dup" />
-                <InputComp :name="key.toString()" :field="field" />
+                <InputComp :name="key.toString()" :field="field" @valuechanged="(val) => field.value = val" />
             </template>
         </div>
     </FormWrapper>

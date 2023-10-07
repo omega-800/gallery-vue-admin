@@ -13,6 +13,9 @@ galleries {
 files {
     id
 }
+category {
+    id
+}
 `
 export async function getShopItems(): Promise<ShopItem[]> {
     return getEntities('shop_item', shopItemQueryFields)

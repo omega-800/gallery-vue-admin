@@ -10,6 +10,7 @@ import TagCompVue from './components/tag/TagComp.vue'
 import GalleryCompVue from './components/gallery/GalleryComp.vue'
 import GalleryPreviewVue from './components/gallery/GalleryPreview.vue'
 import ShopItemCompVue from './components/shop/ShopItemComp.vue'
+import CategoryCompVue from './components/category/CategoryComp.vue'
 
 const app = createApp(App)
 
@@ -23,6 +24,8 @@ app.component('file-comp', FileCompVue)
     .component('gallery-preview-comp', GalleryPreviewVue)
     .component('tag-comp', TagCompVue)
     .component('tag-preview-comp', TagCompVue)
+    .component('category-comp', CategoryCompVue)
+    .component('category-preview-comp', CategoryCompVue)
     .component('shop_item-comp', ShopItemCompVue)
     .component('shop_item-preview-comp', ShopItemCompVue)
 

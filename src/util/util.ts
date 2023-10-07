@@ -58,5 +58,14 @@ export function deepCopy(src: any) {
     return target;
 }
 export const isValid = (initial: any, current?: any) => isNotEmpty(current) && isNotInitial(initial, current)
-export const isNotEmpty = (value: any) => (value.length > 0 || typeof value == 'boolean' || typeof value == 'number' || value instanceof Date)
-export const isNotInitial = (initial: any, current?: any) => initial.toString() != current.toString()
+export const isNotEmpty = (value: any) => value != null && value != undefined && ((value.length && value.length > 0) || typeof value == 'boolean' || typeof value == 'number' || value instanceof Date)
+export const isNotInitial = (initial: any, current?: any) => (initial == null && current) || initial.toString() != current.toString()
+
+export function oppositeColor(color?: string): any {
+    if (!color || color.substring(1).match(/0{3,8}/g)) return '#fff'
+    const m = color.substring(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g);
+    if (!m) return '#fff'
+    const r = parseInt(m[0], 16), g = parseInt(m[1], 16), b = parseInt(m[2], 16);
+    if (!r) return '#fff'
+    return (((r * 299) + (g * 587) + (b * 114)) / 1000) < 127 ? '#fff' : '#000';
+}

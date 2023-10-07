@@ -5,7 +5,7 @@ export interface ShopItem extends DescEntry {
     hide: boolean
     available_from: Date
     available_to?: Date
-    //category_id?: string
+    category_id?: string
     file_ids: string[]
     gallery_ids: string[]
 }

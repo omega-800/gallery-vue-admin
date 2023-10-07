@@ -31,22 +31,34 @@ watch(gallery, (newValue: any, oldValue: any) => {
     <CompWrapper :entity="gallery" :class="['fl-col-c', 'box']">
         <p class="main-name f-l">{{ gallery.name }}</p>
         <p v-if="gallery.description" class="description f-m">{{ gallery.description }}</p>
-        <!--FileComp v-for="file of files" :key="file.id" :file="file" /-->
         <FileDisplay v-if="selected?.file" :file="selected.file" />
         <div v-if="deselected && deselected.length > 0" class="items fl-row">
-            <FileDisplay v-for="item of deselected" :file="item.file" :thumbnail="true" @click="select(item.index)" />
+            <FileDisplay v-for="item of deselected" :key="item.file.id" :file="item.file" :thumbnail="true"
+                @click="select(item.index)" />
         </div>
+        <!--div class="items fl-row">
+            <FileDisplay v-for="item of items" :key="item.file.id" :file="item.file" :thumbnail="!item.selected"
+                @click="select(item.index)" :class="{ selected: item.selected }" />
+        </div -->
+
     </CompWrapper>
 </template>
 
 <style scoped lang="scss">
 .gallery-comp {
     & .items {
+        //position: relative;
 
         & .thumbnail {
             cursor: pointer;
             width: $el-tpl;
         }
+
+        /*
+        & .selected {
+            position: absolute;
+            top: 100%;
+        }*/
     }
 }
 </style>

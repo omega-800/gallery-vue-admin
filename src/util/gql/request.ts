@@ -43,7 +43,11 @@ export function mapIdArr(obj: any, propnames: string[]) {
         ...obj, ...propnames.reduce((newObj: any, key: string) => {
             const values = obj[key as keyof typeof obj];
             if (values !== undefined && values !== null) {
-                newObj[singularName(key) + '_ids'] = values.map((item: { id: string }) => item.id);
+                if (key.endsWith('s')) {
+                    newObj[singularName(key) + '_ids'] = values.map((item: { id: string }) => item.id);
+                } else {
+                    newObj[key + '_id'] = values.id;
+                }
             }
             return newObj;
         }, {})
