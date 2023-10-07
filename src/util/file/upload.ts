@@ -11,55 +11,50 @@ export enum UploadAction {
     db = "Adding to database"
 }
 
-export async function uploadFiles() {
+export function uploadFiles() {
     const uploadStore = useUploadStore()
     const fileStore = useFileStore()
     const { items } = storeToRefs(useUploadStore());
     if (items.value.length == 0) return;
     uploadStore.setProgress(true);
-
-    for (const item of items.value) {
-        let uploadResult: UploadFileResponse;
-        try {
-            uploadResult = await uploadFileRequest(item, uploadStore, { from: 0, to: 40 });
-        } catch (err) {
-            console.log(err);
-            continue;
+    let cnt = 0;
+    items.value.forEach(item => {
+        let result: UploadFileResponse;
+        uploadFileRequest(item, { from: 0, to: 40 })
+            .then(uploadResult => {
+                result = uploadResult;
+                return generateThumbnailRequest(uploadResult.file_name_full, item, { from: 40, to: 80 })
+            })
+            .then(previewResult => {
+                result = { ...result, ...previewResult }
+                uploadStore.setActionFor(item.id, UploadAction.db)
+                if (result.type == 'image') return addImageToDB(result);
+                if (result.type == 'video') return addVideoToDB(result);
+            })
+            .then(fileInfo => {
+                if (!fileInfo) return uploadStore.setErrorFor(item.id, 'Type of file is not image or video');
+                fileStore.add(fileInfo)
+                uploadStore.setStatusFor(item.id, UploadStatus.done)
+                handleEnd()
+            })
+            .catch(err => {
+                console.log(err);
+                uploadStore.setErrorFor(item.id, `${err}`)
+                handleEnd()
+            })
+    })
+    function handleEnd() {
+        cnt += 1;
+        if (cnt == items.value.length) {
+            uploadStore.setProgress(false);
+            uploadStore.clearFinished();
         }
-        let previewResult: GeneratePreviewResponse;
-        try {
-            previewResult = await generateThumbnailRequest(uploadResult.file_name_full, item, uploadStore, { from: 40, to: 80 });
-        } catch (err) {
-            console.log(err);
-            continue;
-        }
-
-        const result = { ...uploadResult, ...previewResult };
-        let fileInfo: any;
-        try {
-            uploadStore.setActionFor(item.id, UploadAction.db)
-            if (result.type == 'image') {
-                fileInfo = await addImageToDB(result);
-            } else if (result.type == 'video') {
-                fileInfo = await addVideoToDB(result);
-            } else {
-                uploadStore.setErrorFor(item.id, 'Type of file is not image or video')
-                continue;
-            }
-        } catch (err) {
-            console.log(err);
-            uploadStore.setErrorFor(item.id, `${err}`)
-            continue;
-        }
-        fileStore.add(fileInfo)
-        uploadStore.setStatusFor(item.id, UploadStatus.done)
     }
-    uploadStore.setProgress(false);
-    uploadStore.clearFinished();
 }
 
-export async function uploadFileRequest(item: UploadEntry, uploadStore: any, percentRange?: Range): Promise<UploadFileResponse> {
+export async function uploadFileRequest(item: UploadEntry, percentRange?: Range): Promise<UploadFileResponse> {
     return new Promise(function (resolve, reject) {
+        const uploadStore = useUploadStore();
         uploadStore.setActionFor(item.id, UploadAction.uploading)
         const uploadSingle = `http://${import.meta.env.VITE_FILE_HOST}:${import.meta.env.VITE_FILE_PORT}${import.meta.env.VITE_FILE_UPSINGLE}`;
 
@@ -68,14 +63,12 @@ export async function uploadFileRequest(item: UploadEntry, uploadStore: any, per
         const xhr = new XMLHttpRequest();
         xhr.open("POST", uploadSingle, true);
 
-        xhr.upload.onprogress = (e: any) => {
-            uploadStore.setPercentFor(item.id, getPercentInRange((e.loaded / e.total) * 100, percentRange))
-        }
+        xhr.upload.onprogress = (e: any) => uploadStore.setPercentFor(item.id, getPercentInRange((e.loaded / e.total) * 100, percentRange))
+
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 300) {
                 resolve(JSON.parse(xhr.response));
             } else {
-                uploadStore.setErrorFor(item.id, this.status + xhr.statusText)
                 reject({
                     status: this.status,
                     statusText: xhr.statusText
@@ -83,7 +76,6 @@ export async function uploadFileRequest(item: UploadEntry, uploadStore: any, per
             }
         };
         xhr.onerror = function () {
-            uploadStore.setErrorFor(item.id, this.status + xhr.statusText)
             reject({
                 status: this.status,
                 statusText: xhr.statusText
@@ -93,8 +85,9 @@ export async function uploadFileRequest(item: UploadEntry, uploadStore: any, per
     });
 }
 
-export async function generateThumbnailRequest(filename: string, item: UploadEntry, uploadStore: any, percentRange?: Range): Promise<GeneratePreviewResponse> {
+export async function generateThumbnailRequest(filename: string, item: UploadEntry, percentRange?: Range): Promise<GeneratePreviewResponse> {
     return new Promise(function (resolve, reject) {
+        const uploadStore = useUploadStore();
         uploadStore.setActionFor(item.id, UploadAction.preview)
         const uploadPreview = `http://${import.meta.env.VITE_FILE_HOST}:${import.meta.env.VITE_FILE_PORT}${import.meta.env.VITE_FILE_UPPREVIEW}/${filename}`;
 
@@ -103,7 +96,6 @@ export async function generateThumbnailRequest(filename: string, item: UploadEnt
             const data = JSON.parse(e.data);
             uploadStore.setDetailsFor(item.id, data.msg, getPercentInRange(data.percent, percentRange))
             if (data.error) {
-                uploadStore.setErrorFor(item.id, data.msg)
                 evtSource.close()
                 reject(data)
             }
@@ -113,7 +105,6 @@ export async function generateThumbnailRequest(filename: string, item: UploadEnt
             }
         }
         evtSource.onerror = (e) => {
-            uploadStore.setErrorFor(item.id, 'Error creating preview')
             evtSource.close()
             reject('Error creating preview')
         }

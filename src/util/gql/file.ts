@@ -24,6 +24,7 @@ export const videoQueryFields = `${fileQueryFields}
 duration
 fps
 fps_prev`
+
 export async function addImageToDB(image: any): Promise<FileData> {
     const onlyGqlAttrs: CreateFileInput = onlyGqlAttrsObj(image)
     return addEntity('image', onlyGqlAttrs)

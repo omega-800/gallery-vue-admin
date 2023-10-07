@@ -9,16 +9,9 @@ import { getShopItems } from './gql/shop_item';
 
 export async function loadFiles() {
     const fileStore = useFileStore();
-    const images = await getImages();
-    const videos = await getVideos();
-    fileStore.set([...images, ...videos])
-    const tagStore = useTagStore();
-    const tags = await getTags();
-    tagStore.set(tags)
-    const galleryStore = useGalleryStore();
-    const galleries = await getGalleries();
-    galleryStore.set(galleries)
-    const shopItemStore = useShopItemStore();
-    const shop_items = await getShopItems();
-    shopItemStore.set(shop_items)
+    getImages().then(images => fileStore.set(images));
+    getVideos().then(videos => fileStore.addMultiple(videos));
+    getTags().then(tags => useTagStore().set(tags));
+    getGalleries().then(galleries => useGalleryStore().set(galleries));
+    getShopItems().then(shop_items => useShopItemStore().set(shop_items));
 }

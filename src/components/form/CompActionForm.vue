@@ -50,33 +50,33 @@ function fieldsToData(): { [key: string]: any } {
 
 async function submitNew(data: { [key: string]: any }) {
     isLoading.value = true;
-    try {
-        // no check needed (image / file) because those are created via upload
-        let newData = await addEntity(entityType.name, data);
-        store.add(newData)
-        reset();
-        emit('success')
-    } catch (err: any) {
-        console.error(err)
-        alert(err)
-        err.msg = JSON.stringify(err)
-    }
-    isLoading.value = false;
+    // no check needed (image / file) because those are created via upload
+    addEntity(entityType.name, data)
+        .then(newData => {
+            store.add(newData)
+            reset();
+            emit('success')
+        })
+        .catch(err => handleError(err))
+        .finally(() => isLoading.value = false);
 }
 
 async function submitEdited(data: { [key: string]: any }) {
     isLoading.value = true;
-    try {
-        const entity = store.byId(entityId);
-        let newData = await alterEntity(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, { ...data, id: entity.id });
-        store.updateProperties(entityId, newData)
-        emit('success')
-    } catch (err: any) {
-        console.error(err)
-        alert(err)
-        err.msg = JSON.stringify(err)
-    }
-    isLoading.value = false;
+    const entity = store.byId(entityId);
+    alterEntity(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, { ...data, id: entity.id })
+        .then(newData => {
+            store.updateProperties(entityId, newData)
+            emit('success')
+        })
+        .catch(err => handleError(err))
+        .finally(() => isLoading.value = false);
+}
+
+function handleError(err: any) {
+    console.error(err)
+    alert(err)
+    err.msg = JSON.stringify(err)
 }
 </script>
 

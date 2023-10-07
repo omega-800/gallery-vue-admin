@@ -26,33 +26,35 @@ let isFav = ref(!!entity.favorite)
 
 async function setFav() {
     isFav.value = !entity.favorite;
-    try {
-        let dateUpdated = await setFavorite(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, entity.id, isFav.value);
-        entityStore.updateProperty(entity.id, 'date_updated', dateUpdated)
-        entityStore.updateProperty(entity.id, 'favorite', isFav.value)
-    } catch (err) {
-        alert(err)
-        isFav.value = !isFav.value
-    }
+    isLoading.value = true;
+    setFavorite(isImage(entity) ? 'image' : isVideo(entity) ? 'video' : entityType.name, entity.id, isFav.value)
+        .then(dateUpdated => {
+            entityStore.updateProperty(entity.id, 'date_updated', dateUpdated)
+            entityStore.updateProperty(entity.id, 'favorite', isFav.value)
+        })
+        .catch(err => {
+            alert(err)
+            isFav.value = !isFav.value
+        })
+        .finally(() => isLoading.value = false)
 }
 
 async function deleteOrRestore() {
     isDel.value = !entity.date_deleted;
     isLoading.value = true;
-    try {
-        let { updated, deleted } = await deleteOrRestoreEntity(entity.entity_type, entityId, isDel.value);
-        entityStore.updateProperty(entityId, 'date_deleted', deleted)
-        entityStore.updateProperty(entityId, 'date_updated', updated)
-    } catch (err) {
-        alert(err)
-        isDel.value = !isDel.value
-    }
-    isLoading.value = false;
+    deleteOrRestoreEntity(entity.entity_type, entityId, isDel.value)
+        .then(({ updated, deleted }) => {
+            entityStore.updateProperty(entityId, 'date_deleted', deleted)
+            entityStore.updateProperty(entityId, 'date_updated', updated)
+        })
+        .catch(err => {
+            alert(err)
+            isDel.value = !isDel.value
+        })
+        .finally(() => isLoading.value = false)
 }
 
-function setEditMode(edit: boolean) {
-    inEditMode.value = showEdit.value = edit;
-}
+const setEditMode = (edit: boolean) => inEditMode.value = showEdit.value = edit;
 </script>
 
 <template>

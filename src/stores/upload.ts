@@ -49,6 +49,7 @@ export const useUploadStore = defineStore("upload", {
             item.state.status = status
         },
         setActionFor(id: string, action: string) {
+            console.log('setAction')
             if (!this.inProgress) return;
             const item = this.items.find(i => i.id == id)
             if (!item) return;

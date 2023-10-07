@@ -15,7 +15,6 @@ export const uniqueEntityQueryFields = `${descEntityQueryFields}
 color
 `
 
-
 export async function deleteOrRestoreEntity(type: string, id: string, doDelete: boolean): Promise<{ deleted?: Date, updated: Date }> {
     const queryName = (doDelete ? 'delete' : 'restore') + '_' + type
     const query = `mutation {

@@ -4,13 +4,21 @@
     padding: $el-size;
 }
 
-$c-p-dark: #157A6E;
+/* $c-p-dark: #157A6E;
 $c-p-mid: #499F68;
 $c-p-light: #77B28C;
 $c-s-dark: #B4654A;
 $c-s-light: #b49d4a;
 $c-light: #C2C5BB;
-$c-dark: #151613;
+$c-dark: #151613; */
+
+$c-p-dark: #77B28C;
+$c-p-mid: #86BBD8;
+$c-p-light: #C4EFBE;
+$c-s-dark: #FCAA67;
+$c-s-light: #F8DF83;
+$c-light: #EEFBEF;
+$c-dark: #00171F;
 
 $el-size: 1em;
 $el-wrap: $el-size * 1.5;
