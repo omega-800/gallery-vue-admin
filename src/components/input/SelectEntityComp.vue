@@ -40,16 +40,18 @@ function deselect() {
 </script>
 
 <template>
-    <!--fieldset :class="entityType.name + '-select-comp select-comp comp'">
-    <legend>{{ pluralName(entityType.display_name) }}</legend-->
-    <Transition name="fade">
-        <div class="box2">
-            <span>Selected {{ entityType.display_name }}</span>
-            <SelectEntityItem v-if="selected != ''" :entity="entityUtil.byId(entityType, selected)"
-                :entity-name="entityType.name" :add="false" @click="deselect()" />
-        </div>
-    </Transition>
-    <div class="box2">
+    <div class="box">
+        <Transition name="fade">
+            <div>
+                <span class="f-l">
+                    {{ selected == '' ? `No ${entityType.display_name} selected` : `Selected ${entityType.display_name}:` }}
+                    <slot></slot>
+                </span>
+
+                <SelectEntityItem v-if="selected != ''" :entity="entityUtil.byId(entityType, selected)"
+                    :entity-name="entityType.name" :add="false" @click="deselect()" />
+            </div>
+        </Transition>
         <ToggleIconPlusMinus @click="showMore = !showMore" :active="!showMore" :text="'Add ' + entityType.display_name"
             text-minus="Show less" />
         <Transition name="fade">

@@ -13,7 +13,7 @@ const { entity } = toRefs(props)
 </script>
 
 <template>
-    <div :class="['select-item', add ? 'select' : 'deselect']">
+    <div :class="['select-item', add ? 'select' : 'deselect', 'hov-sh']">
         <component :is="entityName+'-preview-comp'" :[entityName]="entity" />
         <ToggleIconPlusMinus :active="!!add" class="toggle-icon" />
     </div>
@@ -22,6 +22,7 @@ const { entity } = toRefs(props)
 .select-item {
     position: relative;
     cursor: pointer;
+    flex-basis: calc(20% - $el-rad);
 
     & .toggle-icon {
         opacity: 0;
@@ -41,11 +42,12 @@ const { entity } = toRefs(props)
         background-color: $c-p-dark;
         opacity: 0;
         transition: $tr-op-def;
+        border-radius: $el-pad;
     }
 
     &:hover {
         &::after {
-            opacity: $op-h;
+            opacity: $op-m;
         }
 
         & .toggle-icon {

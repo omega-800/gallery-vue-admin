@@ -1,7 +1,6 @@
 @mixin outline-def {
-    outline: $bd-dash;
-    outline-offset: -5px;
-    padding: $el-size;
+    outline: $bd-def;
+    border-radius: $el-pad;
 }
 
 /* $c-p-dark: #157A6E;
@@ -12,13 +11,16 @@ $c-s-light: #b49d4a;
 $c-light: #C2C5BB;
 $c-dark: #151613; */
 
-$c-p-dark: #77B28C;
-$c-p-mid: #86BBD8;
+$c-p-dark: #003103;
+//$c-p-mid: #86BBD8;
+$c-p-mid: #86d88b;
 $c-p-light: #C4EFBE;
+$c-p-lighter: #e1f8dd;
 $c-s-dark: #FCAA67;
 $c-s-light: #F8DF83;
 $c-light: #EEFBEF;
-$c-dark: #00171F;
+$c-dark: #001f05;
+$c-dark-a: rgba(0, 31, 5, 0.25);
 
 $el-size: 1em;
 $el-wrap: $el-size * 1.5;
@@ -27,7 +29,7 @@ $el-tpl: $el-size * 3;
 $el-ten: $el-size * 10;
 $el-rad: calc($el-size / 2);
 $el-pad: calc($el-rad / 2);
-$thin: 0.15em;
+$thin: 0.125em;
 
 $f-xs: 12px;
 $f-s: 14px;
@@ -35,9 +37,12 @@ $f-m: 16px;
 $f-l: 20px;
 $f-xl: 24px;
 
-$bd-def: $thin solid $c-dark;
+$bd-def: $thin solid $c-p-mid;
 $bd-dot: $thin dotted $c-dark;
 $bd-dash: $thin dashed $c-dark;
+
+$sh-def: 0 $thin $el-pad 1px $c-dark-a;
+$sh-hov: 0 $el-rad $el-rad $thin $c-dark-a;
 
 $z-n: -1;
 $z-l: 1;

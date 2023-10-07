@@ -65,7 +65,7 @@ function upload() {
         <div class="files fl-col-l">
             <template v-for="item in items" :key="item.id">
                 <div v-if="item.state.status != UploadStatus.done"
-                    :class="[{ error: item.state.status == UploadStatus.error }, 'upload-item', 'box2']">
+                    :class="[{ error: item.state.status == UploadStatus.error }, 'upload-item', 'box']">
                     <div class="infos">
                         <p class="f-m">{{ item.file.name }}</p>
                         <p class="f-s">

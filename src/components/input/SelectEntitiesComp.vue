@@ -33,15 +33,14 @@ const deselect = (id: string) => selected_ids.value.splice(selected_ids.value.in
 </script>
 
 <template>
-    <!--fieldset :class="entityType.name + '-select-comp select-comp comp'">
-    <legend>{{ pluralName(entityType.display_name) }}</legend-->
-    <Transition name="fade">
-        <div class="box2">
-            <span>{{ selectedEntities.length + ' ' + pluralName(entityType.display_name) }} Selected</span>
-            <SelectEntityList :entity-type="entityType" :entities="selectedEntities" @selected="deselect" />
-        </div>
-    </Transition>
-    <div class="box2">
+    <div class="box">
+        <Transition name="fade">
+            <div>
+                <span class="f-l">{{ selectedEntities.length + ' ' + pluralName(entityType.display_name) }} Selected<slot>
+                    </slot></span>
+                <SelectEntityList :entity-type="entityType" :entities="selectedEntities" @selected="deselect" />
+            </div>
+        </Transition>
         <ToggleIconPlusMinus @click="showMore = !showMore" :active="!showMore"
             :text="'Add ' + (selectedEntities.length > 0 ? 'more' : pluralName(entityType.display_name))"
             text-minus="Show less" />

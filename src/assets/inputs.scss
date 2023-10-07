@@ -1,5 +1,7 @@
-$c-def: $c-p-light;
-$c-hov: $c-p-mid;
+$c-def: $c-p-lighter;
+$c-hov: $c-p-light;
+$c-def2: $c-p-mid;
+$c-hov2: $c-p-dark;
 
 .btn {
     background-color: $c-def;
@@ -36,26 +38,26 @@ $c-hov: $c-p-mid;
 
 .hov {
     cursor: pointer;
-    color: $c-def;
+    color: $c-def2;
     transition: $tr-c-def;
 
     &:hover {
-        color: $c-hov;
+        color: $c-hov2;
     }
 }
 
 .lnk {
     border-bottom: $bd-def;
     cursor: pointer;
-    border-color: $c-def;
-    color: $c-def;
+    border-color: $c-def2;
+    color: $c-def2;
     font-weight: 600;
     font-size: $f-m;
     transition: $tr-c-def;
 
     &:hover {
-        color: $c-hov;
-        border-color: $c-hov;
+        color: $c-hov2;
+        border-color: $c-hov2;
     }
 }
 
@@ -108,12 +110,17 @@ input[type=checkbox],
 input[type=date],
 input[type=color] {
     background-color: $c-def;
-    border: $bd-def;
-    padding: 0 $el-pad;
+    border: none;
+    border-bottom: $bd-def;
+    padding: 0;
     border-radius: $thin;
     color: $c-dark;
-    height: $el-dbl;
+    height: $el-wrap;
     margin: 0;
+
+    &:hover {
+        background-color: $c-hov;
+    }
 }
 
 input[type=checkbox] {

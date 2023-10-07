@@ -17,14 +17,6 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
 
 <template>
     <CompWrapper :entity="file" :class="['box']">
-        <div class="name-container fl-col">
-            <p class="main-name f-l">{{ file.name || fullFileName(file) }}</p>
-            <p v-if="file.name">{{ fullFileName(file) }}</p>
-            <p v-if="file.description" class="description f-m">{{ file.description }}</p>
-        </div>
-        <div class="tags fl-row">
-            <TagComp v-for="tag in tags" :key="tag.id" :tag="tag" />
-        </div>
         <div class="content">
             <FileDisplay :file="file" />
             <Transition name="fade">
@@ -87,6 +79,14 @@ const tags = computed(() => tagStore.byIds(props.file.tag_ids))
                     </tr>
                 </table>
             </Transition>
+        </div>
+        <div class="name-container fl-col">
+            <p class="main-name f-l">{{ file.name || fullFileName(file) }}</p>
+            <p v-if="file.name">{{ fullFileName(file) }}</p>
+            <p v-if="file.description" class="description f-m">{{ file.description }}</p>
+        </div>
+        <div v-if="tags.length > 0" class="tags fl-row">
+            <TagComp v-for="tag in tags" :key="tag.id" :tag="tag" />
         </div>
     </CompWrapper>
 </template>

@@ -4,8 +4,7 @@
 }
 
 .preview {
-    width: $el-tpl * 2;
-    padding: $el-rad !important;
+    width: $el-tpl + $el-dbl;
 
     & .main-name {
         text-overflow: ellipsis;
@@ -39,15 +38,18 @@
 }
 
 .box {
-    background-color: $c-p-dark;
     @include outline-def;
+    background-color: $c-p-lighter;
+    overflow: hidden;
 }
 
-.box2 {
-    background-color: $c-p-dark;
-    border-radius: $el-rad;
-    padding: $el-pad;
-    border: $bd-def;
+.hov-sh {
+    box-shadow: $sh-def;
+    transition: box-shadow $tr-t-def $tr-m-def;
+
+    &:hover {
+        box-shadow: $sh-hov;
+    }
 }
 
 .cover {
@@ -59,6 +61,8 @@
 }
 
 .f-l {
+    color: $c-p-dark;
+    font-weight: 500;
     font-size: $f-l;
 }
 

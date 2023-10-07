@@ -42,7 +42,7 @@ const isEmpty = (value: any) => !value || value == ''
         <template v-else-if="isSelectEntity(key)">
         </template>
         <template v-else>
-            <div class="input-group box2">
+            <div class="input-group box">
                 <label :for="`${key}${index}`">{{ field.name }}
                     <span v-if="!field.nullable" :class="[{ empty: isEmpty(fields[key].value) }, 'required']">*
                         <template v-if="isEmpty(fields[key].value)">Required!</template>

@@ -12,7 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <TransitionGroup name="list" tag="div" :class="[entityType.name + '-list', 'list', 'fl-row-nj']">
+    <TransitionGroup name="list" tag="div" :class="[entityType.name + '-list', 'list', 'fl-row-j']">
         <template v-if="entities.length > 0">
             <SelectEntityItem v-for="entity of entities" :key="entity.id" :entity="entity" :entity-name="entityType.name"
                 :add="add" @click="$emit('selected', entity.id)" />

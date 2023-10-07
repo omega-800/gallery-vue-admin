@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormField } from '@/types/Form';
 import { toRefs } from 'vue'
+import SwitchComp from './SwitchComp.vue';
 //import { FormField } from '@/types/Form'
 
 const emit = defineEmits(['valuechanged'])
@@ -26,8 +27,9 @@ const emitVal = () => emit('valuechanged', type == 'date' ? new Date(val) : val)
 
 <template>
     <div class="input-group">
-        <label :for="field.name" class="input-label">{{ field.name }}</label>
-        <input :type="type" :name="field.name" :placeholder="field.name" v-model="val" :required="!field.nullable"
+        <label :for="field.name" class="input-label f-l">{{ field.name }}<slot></slot></label>
+        <SwitchComp v-if="type == 'checkbox'" @altered="val = !val" :small="true" />
+        <input v-else :type="type" :name="field.name" :placeholder="field.name" v-model="val" :required="!field.nullable"
             @input="emitVal()">
     </div>
 </template>

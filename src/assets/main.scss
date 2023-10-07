@@ -37,13 +37,3 @@ body {
     text-decoration: none;
   }
 }
-
-@media (hover: hover) {
-
-  a,
-  .hov {
-    &:hover {
-      color: $c-p-light;
-    }
-  }
-}
