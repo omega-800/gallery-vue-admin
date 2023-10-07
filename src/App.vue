@@ -16,7 +16,17 @@ import ToggleIconShop from '@/components/icons/toggle/ToggleIconShop.vue'
       <RouterLink to="/" v-slot="{ isActive, isExactActive }">
         <ToggleIconHome :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
       </RouterLink>
-      <RouterLink to="/files" v-slot="{ isActive, isExactActive }">
+      <RouterLink to="/files_full" v-slot="{ isActive, isExactActive }">
+        <ToggleIconFolder :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
+      </RouterLink>
+      <RouterLink to="/galleries" v-slot="{ isActive, isExactActive }">
+        <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
+          text="Galleries" />
+      </RouterLink>
+      <RouterLink to="/shop_items_full" v-slot="{ isActive, isExactActive }">
+        <ToggleIconShop :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
+      </RouterLink>
+      <!--RouterLink to="/files" v-slot="{ isActive, isExactActive }">
         <ToggleIconFolder :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
       </RouterLink>
       <RouterLink to="/entities">
@@ -33,13 +43,9 @@ import ToggleIconShop from '@/components/icons/toggle/ToggleIconShop.vue'
         <ToggleIconTag :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
           text="Categories" />
       </RouterLink>
-      <RouterLink to="/galleries" v-slot="{ isActive, isExactActive }">
-        <ToggleIconCategories :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true"
-          text="Galleries" />
-      </RouterLink>
       <RouterLink to="/shop_items" v-slot="{ isActive, isExactActive }">
         <ToggleIconShop :active="isActive && isExactActive" :disabled="isActive && isExactActive" :label="true" />
-      </RouterLink>
+      </RouterLink-->
     </nav>
   </header>
   <main>

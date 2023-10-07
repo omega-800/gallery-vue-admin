@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { entities, getEntityInfo } from '@/util/entities'
 import EntityListView from '../views/EntityListView.vue'
+import MultipleEntitiesView from '../views/MultipleEntitiesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,22 @@ const router = createRouter({
       component: EntityListView,
       props: {
         entityType: getEntityInfo('shop_item')
+      }
+    },
+    {
+      path: '/files_full',
+      name: 'files_full',
+      component: MultipleEntitiesView,
+      props: {
+        entityTypes: [getEntityInfo('tag'), getEntityInfo('file')]
+      }
+    },
+    {
+      path: '/shop_items_full',
+      name: 'shop_items_full',
+      component: MultipleEntitiesView,
+      props: {
+        entityTypes: [getEntityInfo('category'), getEntityInfo('shop_item')]
       }
     }
   ]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchComp from '@/components/input/SearchComp.vue';
-import type { EntityInfo, EntityType } from '@/util/entities';
+import type { EntityInfo } from '@/util/entities';
 import { pluralName } from '@/util/gql/request';
 import { entityUtil } from '@/util/entities'
 import EditCompWrapper from '@/components/helpers/EditCompWrapper.vue';
