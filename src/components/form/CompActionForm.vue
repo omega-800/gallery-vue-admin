@@ -89,14 +89,15 @@ function handleError(err: any) {
         @cancelled="reset(); $emit('cancelled')" :has-input="hasInput" :is-correct="isCorrect()">
         <div v-for="(field, key, index) in fields" :key="index" class="input-item">
             <template v-if="isSelectEntities(key)">
-                <SelectEntitiesComp :entity-type="getEntityInfo(getEntitiesKey(key))" :selected_ids="field.value">
+                <SelectEntitiesComp :entity-type="getEntityInfo(getEntitiesKey(key))" :field="field">
                     <ValidationTooltip v-if="!!field.dependsOn" :valid="depSatisfied(field)" condition="dep"
                         :dependant="field.dependsOn" />
                 </SelectEntitiesComp>
             </template>
             <template v-else-if="isSelectEntity(key)">
-                <SelectEntityComp :entity-type="getEntityInfo(getEntityKey(key))" :selected_id="field.value"
-                    @deselected="field.value = undefined" @selected="(id) => field.value = id" />
+                <!--SelectEntityComp :entity-type="getEntityInfo(getEntityKey(key))" :selected_id="field.value"
+                    @deselected="field.value = undefined" @selected="(id) => field.value = id" /-->
+                <SelectEntitiesComp :entity-type="getEntityInfo(getEntityKey(key))" :field="field" />
             </template>
             <template v-else>
                 <InputComp :name="key.toString()" :field="field" @valuechanged="(val) => field.value = val">
