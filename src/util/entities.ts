@@ -34,10 +34,10 @@ export interface EntityUtil {
 
 export const entityUtil: EntityUtil = {
     byId: (ent: EntityInfo, id: string) => ent.store()[pluralName(ent.name)].find((e: Entry) => e.id == id),
-    byIds: (ent: EntityInfo, ids: string[]) => ent.store()[pluralName(ent.name)].find((e: Entry) => ids.includes(e.id)),
-    deleted: (ent: EntityInfo, deleted: boolean) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.date_deleted == deleted),
-    favorites: (ent: EntityInfo) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.favorite),
-    all: (ent: EntityInfo) => ent.store()[pluralName(ent.name)],
+    byIds: (ent: EntityInfo, ids: string[]) => ent.store()[pluralName(ent.name)].find((e: Entry) => ids.includes(e.id)).sort((a: Entry, b: Entry) => b.date_added.getTime() - a.date_added.getTime()),
+    deleted: (ent: EntityInfo, deleted: boolean) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.date_deleted == deleted).sort((a: Entry, b: Entry) => b.date_added.getTime() - a.date_added.getTime()),
+    favorites: (ent: EntityInfo) => ent.store()[pluralName(ent.name)].filter((e: Entry) => !!e.favorite).sort((a: Entry, b: Entry) => b.date_added.getTime() - a.date_added.getTime()),
+    all: (ent: EntityInfo) => ent.store()[pluralName(ent.name)].sort((a: Entry, b: Entry) => b.date_added.getTime() - a.date_added.getTime()),
     queryFields: (ent: EntityInfo) => entityQueryFields + Object.keys(ent.store().fields).join(' ')
 }
 

@@ -33,14 +33,14 @@ watch(gallery, (newValue: any, oldValue: any) => {
         <p v-if="gallery.description" class="description f-m">{{ gallery.description }}</p>
         <FileDisplay v-if="selected?.file" :file="selected.file" />
         <div v-if="deselected && deselected.length > 0" class="items fl-row">
-            <FileDisplay v-for="item of deselected" :key="item.file.id" :file="item.file" :thumbnail="true"
-                @click="select(item.index)" />
+            <div v-for="item of deselected" :key="item.file.id" @click="select(item.index)" class="thmb-container">
+                <FileDisplay :file="item.file" :thumbnail="true" />
+            </div>
         </div>
         <!--div class="items fl-row">
             <FileDisplay v-for="item of items" :key="item.file.id" :file="item.file" :thumbnail="!item.selected"
                 @click="select(item.index)" :class="{ selected: item.selected }" />
         </div -->
-
     </CompWrapper>
 </template>
 
@@ -49,9 +49,10 @@ watch(gallery, (newValue: any, oldValue: any) => {
     & .items {
         //position: relative;
 
-        & .thumbnail {
+        & .thmb-container {
             cursor: pointer;
             width: $el-tpl;
+            height: $el-tpl;
         }
 
         /*

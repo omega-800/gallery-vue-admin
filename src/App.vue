@@ -5,12 +5,14 @@ import ToggleIconFolder from '@/components/icons/toggle/ToggleIconFolder.vue'
 import ToggleIconCategories from '@/components/icons/toggle/ToggleIconCategories.vue'
 import ToggleIconTag from '@/components/icons/toggle/ToggleIconTag.vue'
 import ToggleIconShop from '@/components/icons/toggle/ToggleIconShop.vue'
+import LoadingBar from '@/components/loading/LoadingBar.vue'
 </script>
 
 <script lang="ts">
 </script>
 
 <template>
+  <LoadingBar />
   <header>
     <nav>
       <RouterLink to="/" v-slot="{ isActive, isExactActive }">

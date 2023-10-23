@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PopupWrapper from '@/components/helpers/PopupWrapper.vue'
-import LoadingComp from '@/components/helpers/LoadingComp.vue'
+import LoadingComp from '@/components/loading/LoadingComp.vue'
 import { ref } from 'vue'
 import { deleteOrRestoreEntity, setFavorite } from '@/util/gql/entity'
 import EditBarWrapper from '@/components/helpers/EditBarWrapper.vue';

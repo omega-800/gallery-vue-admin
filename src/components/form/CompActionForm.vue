@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { type EntityInfo, type EntityType, isEntity, getEntityInfo } from '@/util/entities'
 import FormWrapper from '@/components/form/FormWrapper.vue';
-import LoadingComp from '@/components/helpers/LoadingComp.vue'
+import LoadingComp from '@/components/loading/LoadingComp.vue'
 import FileUpload from '@/components/file/FileUpload.vue'
 import { computed, reactive, ref } from 'vue'
 import { addEntity, alterEntity } from '@/util/gql/entity';
 import { deepCopy, isImage, isValid, isNotEmpty, isVideo } from '@/util/util';
 import type { FormField, FormFields } from '@/types/Form';
-import SelectEntitiesComp from '@/components/input/SelectEntitiesComp.vue';
-import SelectEntityComp from '@/components/input/SelectEntityComp.vue';
+import SelectEntitiesComp from '@/components/select-entity/SelectEntitiesComp.vue';
 import InputComp from '../input/InputComp.vue';
 import ValidationTooltip from '../input/ValidationTooltip.vue';
 

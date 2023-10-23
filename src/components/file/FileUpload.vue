@@ -115,7 +115,7 @@ function upload() {
                 height: 100%;
                 left: 0;
                 top: 0;
-                border-radius: $el-rad;
+                border-radius: $el-pad;
             }
         }
 
@@ -164,7 +164,7 @@ function upload() {
 
         & .progress {
             display: block;
-            color: $c-light;
+            color: $c-p-dark;
             font-weight: 600;
             font-size: $f-l;
         }

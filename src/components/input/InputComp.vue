@@ -27,7 +27,7 @@ const emitVal = () => emit('valuechanged', type == 'date' ? new Date(val) : val)
 
 <template>
     <div class="input-group">
-        <label :for="field.name" class="input-label f-l">{{ field.name }}<slot></slot></label>
+        <label :for="field.name" class="input-label f-m">{{ field.name }}<slot></slot></label>
         <SwitchComp v-if="type == 'checkbox'" @altered="val = !val" :small="true" />
         <input v-else :type="type" :name="field.name" :placeholder="field.name" v-model="val" :required="!field.nullable"
             @input="emitVal()">

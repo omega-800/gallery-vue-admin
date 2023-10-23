@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SearchComp from '@/components/input/SearchComp.vue';
 import ToggleIconPlusMinus from '@/components/icons/toggle/ToggleIconPlusMinus.vue';
-import SelectEntityList from '../helpers/SelectEntityList.vue';
-import SelectEntityItem from '@/components/helpers/SelectEntityItem.vue';
+import SelectEntityList from './SelectEntityList.vue';
+import SelectEntityItem from './SelectEntityItem.vue';
 import type { Entry } from '@/types/gql/response/Entry';
 import type { EntityInfo } from '@/util/entities';
 import { pluralName } from '@/util/gql/request';
@@ -43,14 +43,14 @@ const addText = computed(() => isArr
     : 'Set ' + entityType.value.display_name)
 const selectedText = computed(() => isArr
     ? `${selectedEntities.value.length} ${pluralName(entityType.value.display_name)} selected`
-    : selectedEntities.value ? `No ${entityType.value.display_name} selected` : `Selected ${entityType.value.display_name}:`)
+    : selectedEntities.value ? `Selected ${entityType.value.display_name}:` : `No ${entityType.value.display_name} selected`)
 </script>
 
 <template>
-    <div class="box">
+    <div class="box select-entities-comp">
         <Transition name="fade">
             <div>
-                <span class="f-l">{{ selectedText }}<slot>
+                <span class="f-m">{{ selectedText }}<slot>
                     </slot></span>
                 <SelectEntityList v-if="isArr" :entity-type="entityType" :entities="selectedEntities"
                     @selected="deselect" />
@@ -58,9 +58,10 @@ const selectedText = computed(() => isArr
                     :entity-name="entityType.name" :add="false" @click="deselect(selectedEntities.id)" />
             </div>
         </Transition>
-        <ToggleIconPlusMinus @click="showMore = !showMore" :active="!showMore" :text="addText" text-minus="Show less" />
+        <ToggleIconPlusMinus @click="showMore = !showMore" :active="!showMore" :text="addText" text-minus="Show less"
+            class="small darker" />
         <Transition name="fade">
-            <div v-if="showMore">
+            <div v-if="showMore" class="darker">
                 <SearchComp @submitted="setSearch" />
                 <SelectEntityList :entity-type="entityType" :entities="deselectedEntities" :add="true" @selected="select" />
             </div>
@@ -69,4 +70,12 @@ const selectedText = computed(() => isArr
 </template>
 
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.select-entities-comp {
+    margin: $el-rad;
+}
+
+.darker {
+    background-color: $c-p-light;
+}
+</style>

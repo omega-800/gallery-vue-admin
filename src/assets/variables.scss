@@ -1,8 +1,3 @@
-@mixin outline-def {
-    outline: $bd-def;
-    border-radius: $el-pad;
-}
-
 /* $c-p-dark: #157A6E;
 $c-p-mid: #499F68;
 $c-p-light: #77B28C;
@@ -59,3 +54,26 @@ $tr-t-def: 0.25s;
 $tr-m-def: ease;
 $tr-op-def: opacity $tr-t-def $tr-m-def;
 $tr-c-def: color $tr-t-def $tr-m-def, background-color $tr-t-def $tr-m-def, border-color $tr-t-def $tr-m-def, outline-color $tr-t-def $tr-m-def, border-right $tr-t-def $tr-m-def, border-top $tr-t-def $tr-m-def, border-bottom $tr-t-def $tr-m-def, border-left $tr-t-def $tr-m-def;
+
+@mixin outline-def {
+    outline: $bd-def;
+    border-radius: $el-pad;
+}
+
+%spinner {
+    border: $el-size solid $c-p-dark;
+    border-top: $el-size solid $c-p-light;
+    animation: spin 2s linear infinite;
+    border-radius: 50%;
+    opacity: $op-h;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

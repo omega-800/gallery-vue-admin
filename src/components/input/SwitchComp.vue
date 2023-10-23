@@ -6,7 +6,6 @@ const props = defineProps<{
 }>()
 </script>
 
-
 <template>
     <div :class="['switch-comp', 'comp', { 'named-switch': text, small }]">
         <label class="switch">

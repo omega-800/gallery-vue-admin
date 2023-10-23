@@ -30,6 +30,20 @@ const showActive = computed(() => [props.active, isHover.value].filter(b => b).l
     gap: $el-pad;
     text-decoration: none;
 
+    &.small {
+        gap: $thin;
+
+        & span {
+            font-size: $f-m;
+            color: $c-dark;
+        }
+
+        & .w-6.h-6 {
+            width: $el-wrap;
+            height: $el-wrap;
+        }
+    }
+
     & .icon-container {
         position: relative;
 

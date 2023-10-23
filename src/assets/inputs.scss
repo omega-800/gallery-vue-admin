@@ -104,6 +104,10 @@ $c-hov2: $c-p-dark;
     }
 }
 
+form {
+    padding: 0 $el-rad;
+}
+
 input[type=text],
 input[type=number],
 input[type=checkbox],

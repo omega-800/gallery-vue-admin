@@ -31,7 +31,7 @@ const category = shop_item.value.category_id ? useCategoryStore().byId(shop_item
             'Available in shop' }}</p>
         <div class="fl-e2e">
             <p class="main-name f-l">{{ shop_item.name }}</p>
-            <p class="price f-l">CHF {{ formatPrice(shop_item.price) }}</p>
+            <p class="price f-l">{{ formatPrice(shop_item.price) }}</p>
         </div>
         <CategoryComp v-if="category" :category="category" />
         <p v-if="shop_item.description" class="description f-m">{{ shop_item.description }}</p>

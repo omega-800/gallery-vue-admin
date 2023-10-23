@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Category } from '@/types/gql/response/Category'
 import CompWrapper from '@/components/helpers/CompWrapper.vue';
-import { ref, toRefs } from 'vue'
+import { ref, toRefs, computed } from 'vue'
 import { oppositeColor } from '@/util/util';
 
 const props = defineProps<{
@@ -10,9 +10,10 @@ const props = defineProps<{
 }>()
 const { category } = toRefs(props)
 const showDesc = ref(false)
-const categoryColor = ref(category.value.color || '$c-p-light')
-const bgColor = ref(category.value.color ? category.value.color + '50' : '#C4EFBE50'/* '$c-p-light' */)
-const textColor = ref(oppositeColor(category.value.color))
+const categoryColor = computed(() => category.value.color || '$c-p-light')
+const bgColor = computed(() => category.value.color ? category.value.color + '40' : '#C4EFBE40'/* '$c-p-light' */)
+//const textColor = computed(() => oppositeColor(category.value.color))
+const textColor = '#000'
 </script>
 
 <template>

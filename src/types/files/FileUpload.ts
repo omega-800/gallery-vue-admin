@@ -21,6 +21,11 @@ export interface UploadEntry {
     file: File,
     state: StateDetails
 }
+export interface LoadingEntry {
+    id: string,
+    name: string,
+    state: StateDetails
+}
 
 //responses
 

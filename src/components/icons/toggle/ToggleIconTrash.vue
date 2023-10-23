@@ -25,10 +25,10 @@ const props = defineProps<{
 <style scoped lang="scss">
 .icon-trash {
     &.isdeleted {
-        color: $c-light !important;
+        color: $c-p-dark !important;
 
         &:hover {
-            color: $c-light !important;
+            color: $c-p-dark !important;
         }
     }
 

@@ -6,7 +6,7 @@ const props = defineProps<{
 
 <template>
     <Transition name="fade">
-        <div v-if="show" class="editbar-wrapper wrapper fl-row">
+        <div v-if="show" class="editbar-wrapper wrapper fl-row box">
             <slot></slot>
         </div>
     </Transition>
@@ -18,8 +18,6 @@ const props = defineProps<{
     position: absolute;
     bottom: 100%;
     right: 0;
-    background-color: $c-p-dark;
     flex-wrap: nowrap;
-    border-radius: $el-pad;
 }
 </style>
