@@ -1,11 +1,16 @@
 // See https://containers.dev/implementors/json_reference/ for configuration reference
 {
-	"name": "Untitled Node.js project",
+	"name": "Gallery Admin Frontend",
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-  "remoteUser": "node",
-  "extensions": [
-	"Vue.volar",
-  ]
+	"remoteUser": "node",
+	"extensions": [
+		"Vue.volar",
+		"Vue.vscode-typescript-vue-plugin",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+    ],
+	"postCreateCommand": "npm ci && npm cache clean --force",
+	"postStartCommand": "nohup bash -c 'npm run dev &' & tail -f nohup.out"
 }
