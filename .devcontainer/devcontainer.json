@@ -11,6 +11,7 @@
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode"
     ],
+	"forwardPorts": [8090, 8040, 5173],
 	"postCreateCommand": "npm ci && npm cache clean --force",
 	"postStartCommand": "nohup bash -c 'npm run dev &' & tail -f nohup.out"
 }
